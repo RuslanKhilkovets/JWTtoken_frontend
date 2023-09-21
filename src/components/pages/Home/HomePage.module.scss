@@ -1,0 +1,14 @@
+.HomePage{
+    height: 100vh;
+    width: 100%;
+    background-color: #bbb;
+    color: green;
+    &__Content{
+        margin: 0 auto;
+        width: min(100%, 500px);
+    }
+    &__Link{
+        color: rgb(13, 0, 128);
+        font-size: 1.2rem;
+    }
+}
