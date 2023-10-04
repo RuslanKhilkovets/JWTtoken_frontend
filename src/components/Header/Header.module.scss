@@ -1,0 +1,41 @@
+.Header{
+    padding: 20px;
+    height: max-content;
+    background-color: #aaa;
+    width: 100%;
+    &__Container{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    &__AddBtn{
+        background: url("../../icons/basket.svg") no-repeat;
+        background-size: contain;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        position: relative;
+        &::after{
+            content: attr(data-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Lato";
+            font-size: 1rem;
+            color: #fff ;
+            width: 25px;
+            height: 25px;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            border-radius: 50%;
+            background-color: #00539f;
+        }
+    }
+    &__UI{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+}

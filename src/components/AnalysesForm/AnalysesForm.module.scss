@@ -1,0 +1,26 @@
+.AnalysesForm{
+    &__Form{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+     }
+    &__Selects{
+        display: flex;
+        gap: 32px;  
+        flex-wrap: wrap;
+        margin: 10px 0;
+    }
+    &__Select{
+        width: 216px;
+        flex-grow: 1;
+        flex-basis: 200;
+    }
+    &__Input{
+        width: 100%;
+    }
+    &__Inputs{
+        width: min(100%, 384px);
+    }
+}

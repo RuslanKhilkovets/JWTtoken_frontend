@@ -5,7 +5,6 @@ export default async function registration(url: string, registerData: IGetRegist
     const headers = {
         'Content-Type': 'application/json'
     }
-    
     try{
         const postRegister = await axios.post(url, registerData, {
             headers,

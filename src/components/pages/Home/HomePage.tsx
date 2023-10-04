@@ -1,9 +1,11 @@
 import * as React from 'react';
 import cl from "./HomePage.module.scss"
 import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
+import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export const HomePage: React.FC = () => {
+    const navigate = useNavigate();
     return(
         <div className={cl.HomePage}>
             <div className={cl.HomePage__Content}>
@@ -13,12 +15,11 @@ export const HomePage: React.FC = () => {
                 <Typography variant="h4" gutterBottom textAlign={"center"}>
                     Увійдіть щоб отримати доступ 
                 </Typography>
-                <Link href="/login">Увійти</Link>
+                <Button variant='contained' color='success' onClick={() => navigate("./login")}>Увійти</Button>
                 <Typography variant="h5" gutterBottom textAlign={"center"}>
                     Не маєте акаунт?
                 </Typography>
-                <Link href="/registration" className={cl}>Реєстрація</Link>
-                
+                <Button variant='contained' color='success' onClick={() => navigate("./registration")}>Зареєструватися</Button>                
             </div>
         </div>
     )

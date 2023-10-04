@@ -4,15 +4,24 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import "./App.css"
-import LoginPage from './components/pages/LogIn/LogInPage';
-import HomePage from './components/pages/Home/HomePage';
+import "./nullstyle.css"
 import { AppRouter } from './components/AppRouter';
-import { routes } from './routes/routes';
+import { Provider } from 'react-redux';
+import store from './store';
+import Header from './components/Header/Header';
+import { BrowserRouter } from 'react-router-dom';
+import { ContextProvider } from './context/ContextProvider';
 
 
 export default function App() {
-
     return (
-        <AppRouter routes={routes}/>
+        <Provider store={store}>
+            <ContextProvider>
+                <BrowserRouter>
+                    <Header/>
+                    <AppRouter/>
+                </BrowserRouter>
+            </ContextProvider>
+        </Provider>
     );
 }

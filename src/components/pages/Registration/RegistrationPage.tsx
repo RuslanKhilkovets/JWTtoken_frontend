@@ -3,11 +3,10 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import axios from "axios"
 import cl from "./RegistrationPage.module.scss"
 import registration from '../../../API/registration';
 import { validateEmail, validatePassword } from '../../../utils/validations';
-
+import { useNavigate } from 'react-router-dom';
 
 export interface IGetRegisterData {
     Password: string;
@@ -16,9 +15,8 @@ export interface IGetRegisterData {
 }
 
 
-
 export const RegistrationPage: React.FC = () => {
-
+ 
     const [registerData, setRegisterData] = React.useState<IGetRegisterData>({
         Password: "",
         Username: "",
@@ -26,7 +24,7 @@ export const RegistrationPage: React.FC = () => {
     });
 
     const [validationErrors, setValidationErrors] = React.useState<Partial<IGetRegisterData>>({});
-
+    const navigate = useNavigate();
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
@@ -61,6 +59,7 @@ export const RegistrationPage: React.FC = () => {
         if (validateForm()) {
             const registerAPIUrl = "http://localhost:5000/api/Authenticate/register"
             await registration(registerAPIUrl, registerData);
+            navigate("/login");
         }
     };
 
