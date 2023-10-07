@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Modal.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { addItemToShoppingCart, clearShoppingCart, removeItemFromShoppingCart } from '../../../store/shoppingCart/actions';
+import { clearShoppingCart, removeItemFromShoppingCart } from '../../../store/shoppingCart/actions';
 import Button from '../Button/Button';
 
 interface ModalProps {
@@ -21,6 +21,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     }, 0);
 
     setTotalPriceCount(total);
+    console.log(shoppingCartItems)
+
   }, [shoppingCartItems]);
 
   if (!isOpen) {
@@ -64,12 +66,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                   </TableHead>
                   <TableBody>
                     {shoppingCartItems.map((row: any) => (
-                      <TableRow key={row.name}>
+                      <TableRow key={row.description}>
                         <TableCell component="th" scope="row">
                           {row.name}
                         </TableCell>
                         <TableCell align="center">{row.price}</TableCell>
-                        <TableCell align="center">{row.deadline}</TableCell>
+                        <TableCell align="center">{row.category}</TableCell>
                         <TableCell>
                           <button
                             className={"delete-button"}

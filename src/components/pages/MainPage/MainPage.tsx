@@ -4,7 +4,6 @@ import {  tabsRoutes } from '../../../routes/routes';
 import Tabs from '../../Tabs/Tabs';
 
 const MainPage: React.FC = () => {
-    console.log(tabsRoutes)
     return (
         <>
             <Tabs/>

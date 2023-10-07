@@ -1,26 +1,33 @@
 .AnalysesForm{
+    width: min(1200px, 100%);
+    padding: 20px 0;
     &__Form{
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-     }
-    &__Selects{
-        display: flex;
-        gap: 32px;  
-        flex-wrap: wrap;
-        margin: 10px 0;
+
     }
-    &__Select{
-        width: 216px;
-        flex-grow: 1;
-        flex-basis: 200;
+    &__Container{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
     }
-    &__Input{
-        width: 100%;
+    &__Group{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 20px;
     }
-    &__Inputs{
-        width: min(100%, 384px);
+}
+
+
+@media (max-width: 768px){
+    .AnalysesForm{
+        &__Container{
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        &__Group{
+            grid-template-columns: 1fr;
+
+        }
     }
 }

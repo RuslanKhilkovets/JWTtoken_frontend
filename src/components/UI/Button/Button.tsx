@@ -5,11 +5,12 @@ interface IButtonProps {
     children: React.ReactNode;
     active?: boolean;
     className?: string;
+    onClick?: any;
 }
 
-const Button: React.FC<IButtonProps> = ({ children, active, className }) => {
+const Button: React.FC<IButtonProps> = ({ children, onClick, active, className }) => {
     return (
-        <button className={`${cl.Button} ${active ? cl.Button_Current : ""} ${className}`}>
+        <button onClick={onClick} className={`${cl.Button} ${active ? cl.Button_Current : ""} ${className}`}>
             <p className={cl.Button__Text}>
                 {children}
             </p>

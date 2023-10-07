@@ -8,9 +8,6 @@ import cl from "./AnalysesForm.module.scss";
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 
-
-
-
 export interface IGetFormData {
     city: string,
     sex: string;
@@ -24,7 +21,6 @@ export const AnalysesForm = () => {
         searchParam: ""
     });
 
-
     const handleInputChange = (
         e: React.ChangeEvent<{ name: string; value: unknown }> | React.ChangeEvent<HTMLInputElement>
     ) => {
@@ -37,70 +33,66 @@ export const AnalysesForm = () => {
     };
     
   return (
-    <form className={cl.AnalysesForm__Form}>
-      <div className={cl.AnalysesForm__Selects}>
-        <div className={cl.AnalysesForm__Select}>
-          <FormControl>
-            <InputLabel id="city">Місто</InputLabel>
-            <Select
-              className={cl.AnalysesForm__Select}
-              labelId="city"
-              id="city"
-              name='city'
-              value={formData.city}
-              label="Місто"
-              onChange={handleInputChange}
-              sx={{
-                borderRadius: '25px', // Змініть значення на те, яке вам потрібно
-              }}
-            >
-              <MenuItem value={"Kyiv"}>Kyiv</MenuItem>
-              <MenuItem value={"Lviv"}>Lviv</MenuItem>
-              <MenuItem value={"Kharkiv"}>Kharkiv</MenuItem>
-            </Select>
-          </FormControl>
+    <form className={cl.AnalysesForm}>
+        <div className={cl.AnalysesForm__Container}>
+            <div className={cl.AnalysesForm__Group}>
+                <FormControl sx={{width: "100%"}}>
+                    <InputLabel id="city">Місто</InputLabel>
+                    <Select
+                        labelId="city"
+                        id="city"
+                        name='city'
+                        value={formData.city}
+                        label="Місто"
+                        onChange={handleInputChange}
+                        sx={{
+                            borderRadius: '25px', 
+                            
+                        }}
+                    >
+                        <MenuItem value={"Kyiv"}>Kyiv</MenuItem>
+                        <MenuItem value={"Lviv"}>Lviv</MenuItem>
+                        <MenuItem value={"Kharkiv"}>Kharkiv</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl sx={{width: "100%"}}>
+                    <InputLabel id="sex">Стать</InputLabel>
+                    <Select
+                        className='col-12'
+                        labelId="sex"
+                        id="sex"
+                        name="sex"
+                        value={formData.sex}
+                        label="Стать"
+                        onChange={handleInputChange}
+                        sx={{
+                            borderRadius: '25px',
+                        }}
+                    >
+                        <MenuItem value={"Чоловіча"}>Чоловіча</MenuItem>
+                        <MenuItem value={"Жіноча"}>Жіноча</MenuItem>
+                    </Select>
+                </FormControl>
+            </div>
+            <TextField
+                className={"col-12 col-md-6"}
+                name='searchParam'
+                label="Введіть код або назву послуги"
+                variant="outlined"
+                value={formData.searchParam}
+                onChange={handleInputChange}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <SearchIcon />
+                        </InputAdornment>
+                    ),
+                    sx: {
+                        borderRadius: '20px',
+                    },
+                }}
+            />
         </div>
-        <div className={cl.AnalysesForm__Select}>
-          <FormControl>
-            <InputLabel id="sex">Стать</InputLabel>
-            <Select
-              className={cl.AnalysesForm__Select}
-              labelId="sex"
-              id="sex"
-              name="sex"
-              value={formData.sex}
-              label="Стать"
-              onChange={handleInputChange}
-              sx={{
-                borderRadius: '25px',
-              }}
-            >
-              <MenuItem value={"Чоловіча"}>Чоловіча</MenuItem>
-              <MenuItem value={"Жіноча"}>Жіноча</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-      </div>
-      <div className={cl.AnalysesForm__Inputs}>
-      <TextField
-            className={cl.AnalysesForm__Input}
-            name='searchParam'
-            label="Введіть код або назву послуги"
-            variant="outlined"
-            value={formData.searchParam}
-            onChange={handleInputChange}
-            InputProps={{
-                endAdornment: (
-                    <InputAdornment position="end">
-                        <SearchIcon />
-                    </InputAdornment>
-                ),
-                sx: {
-                    borderRadius: '20px',
-                },
-            }}
-        />
-      </div>
     </form>
   );
 }

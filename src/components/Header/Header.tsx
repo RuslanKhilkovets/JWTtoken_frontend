@@ -44,7 +44,6 @@ export const Header: React.FC<HeaderProps> = () => {
           </Button>
         </div>
       </div>
-      {/* Передаємо стан isModalOpen і функцію closeModal в компонент Modal */}
       <Modal isOpen={isModalOpen} onClose={closeModal} />
     </header>
   );

@@ -1,0 +1,24 @@
+.Card{
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 24px 32px;
+    &__Title{
+        width: max-content;
+        position: relative;
+        font-family: "Lato", sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 29px;
+        letter-spacing: 0.15px;
+        color: rgba(117, 138, 176, 1);
+        &::after{
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            height: 1px;
+            width: 100%;
+            background-color: rgba(117, 138, 176, 1);
+        }
+    }
+}

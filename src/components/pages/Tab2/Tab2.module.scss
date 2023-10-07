@@ -1,0 +1,83 @@
+.Tab2{
+    margin: 0 auto;
+    width: min(1200px, 100%);
+    &__Inputs{
+        display: grid;
+        gap: 16px;
+    }
+    &__Container{
+        display: grid;
+        grid-template-columns: 70% 30%;
+        gap: 32px;
+    }
+    &__Items{
+        display: grid;
+        gap: 32px;
+        &_Grid{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 16px;
+        }
+        &_Container{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+    }
+    &__ButtonContainer{
+        display: flex;
+        justify-content: center;
+        padding: 24px;
+    }
+    &__Button{
+        width: 256px;
+    }
+    &__Card{
+        display: grid;
+        gap: 32px;
+    }
+    &__Checkboxes{
+        margin: 10px 0;
+    }
+    &__Description{
+        margin: 10px 0;
+        font-family: "Lato", sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 19px;
+        letter-spacing: 0em;
+        color: rgba(188, 188, 188, 1);
+    }
+}
+
+
+
+@media (max-width: 1024px){
+    .Tab2{
+        &__Container{
+            grid-template-columns: 60% 40%;
+        }
+    }
+}
+
+
+@media (max-width: 768px){
+    .Tab2{
+        &__Container{
+            grid-template-columns: 1fr;
+        }
+        &__Items{
+            display: grid;
+            gap: 32px;
+            &_Grid{
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            &_Container{
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+}
