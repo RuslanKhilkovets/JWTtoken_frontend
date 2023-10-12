@@ -10,14 +10,15 @@ import { AnalysesSidebar } from '../AnalysesSidebar/AnalysesSidebar';
 export const Analyses: React.FC = () => {
   const [activePanel, setActivePanel] = React.useState<string | false>('');
   const [breadcrumbLinks, setBreadcrumbLinks] = React.useState<string[]>([]);
+  const [formData, setFormData] = React.useState("");
+
+
 
   const handleBreadcrumbClick = (panel: string) => {
     setActivePanel(panel);
-    // Оновлюємо хлібні крихти при розгортанні розділу акордеона
     if (panel !== '') {
       setBreadcrumbLinks([...breadcrumbLinks, panel]);
     } else {
-      // При закритті акордеону очищаємо хлібні крихти
       setBreadcrumbLinks([]);
     }
   };
@@ -39,7 +40,6 @@ export const Analyses: React.FC = () => {
             <Button active>Для лікарів</Button>
             <Button>Для клієнтів</Button>
           </div>
-          {/* Передаємо breadcrumbLinks та функцію onBreadcrumbClick в компонент BreadCrumbs */}
           <BreadCrumbs
             breadcrumbLinks={breadcrumbLinks}
             onBreadcrumbClick={(index: number) => handleBreadcrumbClick(breadcrumbLinks[index])}

@@ -5,17 +5,22 @@ import InfoAnalyses from '../../UI/InfoAnalyses/InfoAnalyses';
 import { useSelector } from 'react-redux';
 import Button from '../../UI/Button/Button';
 import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 export const Tab3 = () => {
-    const place = localStorage.getItem("place");
-    const payload = localStorage.getItem("payload");
-    const surname = localStorage.getItem("surname");
-    const name = localStorage.getItem("name");
-    const patronymic = localStorage.getItem("patronymic");
-    const birthdayDate = localStorage.getItem("birthdayDate");
-    const phone = localStorage.getItem("phone");
-    const email = localStorage.getItem("email");
-    const paymentMethod = localStorage.getItem("paymentMethod");
+
+    const formData = JSON.parse(localStorage.getItem("formData"))
+    const { 
+        place, 
+        paymentMethod, 
+        surname, 
+        name, 
+        patronymic,
+        birthdayDate,
+        phone,
+        email
+    } = formData;
+
 
     const { shoppingCartItems } = useSelector((state: any) => state.shoppingCart);
 
@@ -35,7 +40,7 @@ export const Tab3 = () => {
                 <InfoAnalyses icon="place" text={place} title="Пункт сдачи" />
                 <InfoAnalyses icon="payment" text={paymentMethod} title="Тип оплати" />
                 <InfoAnalyses icon="fio" text={`${surname} ${name} ${patronymic}`} title="ФИО" />
-                <InfoAnalyses icon="birthday" text={birthdayDate} title="Дата рождения" />
+                <InfoAnalyses icon="birthday" text={dayjs(birthdayDate).format("DD/MM/YYYY")} title="Дата рождения" />
                 <InfoAnalyses icon="phone" text={phone} title="Телефон" />
                 <InfoAnalyses icon="email" text={email} title="Email" />
             </Card>

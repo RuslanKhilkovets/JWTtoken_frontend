@@ -47,7 +47,6 @@ export const AnalysesForm = () => {
                         onChange={handleInputChange}
                         sx={{
                             borderRadius: '25px', 
-                            
                         }}
                     >
                         <MenuItem value={"Kyiv"}>Kyiv</MenuItem>
@@ -58,7 +57,6 @@ export const AnalysesForm = () => {
                 <FormControl sx={{width: "100%"}}>
                     <InputLabel id="sex">Стать</InputLabel>
                     <Select
-                        className='col-12'
                         labelId="sex"
                         id="sex"
                         name="sex"
@@ -75,7 +73,6 @@ export const AnalysesForm = () => {
                 </FormControl>
             </div>
             <TextField
-                className={"col-12 col-md-6"}
                 name='searchParam'
                 label="Введіть код або назву послуги"
                 variant="outlined"

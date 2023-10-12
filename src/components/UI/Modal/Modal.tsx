@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './Modal.scss';
-import { useDispatch, useSelector } from 'react-redux';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { clearShoppingCart, removeItemFromShoppingCart } from '../../../store/shoppingCart/actions';
 import Button from '../Button/Button';
+import { useNavigate } from 'react-router-dom';
 
 interface ModalProps {
   isOpen: boolean;
@@ -12,18 +11,19 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [totalPriceCount, setTotalPriceCount] = useState(0);
-  const { shoppingCartItems } = useSelector((state: any) => state.shoppingCart);
-  const dispatch = useDispatch();
+  const cartDataString = localStorage.getItem('shoppingCart');
+  const cartData = cartDataString ? JSON.parse(cartDataString) : [];
+
+  const navigate = useNavigate()
+
 
   useEffect(() => {
-    const total = shoppingCartItems.reduce((acc: number, item: any) => {
+    const total = cartData.reduce((acc: number, item: any) => {
       return acc + item.price;
     }, 0);
-
+    
     setTotalPriceCount(total);
-    console.log(shoppingCartItems)
-
-  }, [shoppingCartItems]);
+  }, [cartData]);
 
   if (!isOpen) {
     return null;
@@ -32,15 +32,20 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const handleClose = () => {
     onClose();
   };
-
+  
   const handleRemoveItem = (row: any) => {
-    dispatch(removeItemFromShoppingCart(row));
+    const updatedCartData = cartData.filter((item: any) => item.id !== row.id);
+    localStorage.setItem('shoppingCart', JSON.stringify(updatedCartData));
+    setTotalPriceCount(updatedCartData.reduce((acc, item) => acc + item.price, 0));
   };
 
   const handleClearCart = () => {
-    dispatch(clearShoppingCart());
+    localStorage.setItem("shoppingCart", "[]");
   };
-
+  const onNavigate = (tabNumber: number) => {
+      navigate(`../tab${tabNumber}`)
+      handleClose();
+  }
   return (
     <div className="modal-overlay">
       <div className="modal">
@@ -52,7 +57,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <button className="close-button" onClick={handleClose}></button>
         </div>
         <div className="modal-content">
-          {shoppingCartItems.length !== 0 ? (
+          {cartData.length !== 0 ? (
             <>
               <TableContainer component={Paper}>
                 <Table>
@@ -65,10 +70,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {shoppingCartItems.map((row: any) => (
+                    {cartData.map((row: any) => (
                       <TableRow key={row.description}>
                         <TableCell component="th" scope="row">
-                          {row.name}
+                          {row.description}
                         </TableCell>
                         <TableCell align="center">{row.price}</TableCell>
                         <TableCell align="center">{row.category}</TableCell>
@@ -91,16 +96,25 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 <p className="total-count__text">Итого: {totalPriceCount.toFixed(2)} $</p>
               </div>
               <div className="modal-buttons">
-                <Button active>
+                <Button active onClick={() => onNavigate(1)}>
                   Добавить анализы
                 </Button>
-                <Button active>
+                <Button active onClick={() => onNavigate(2)}>
                   Оформить заказ
                 </Button>
               </div>
             </>
           ) : (
-            <p>Корзина пуста</p>
+            <>
+                            <div className="modal-buttons">
+                <Button active onClick={() => onNavigate(1)}>
+                  Добавить анализы
+                </Button>
+                <Button active onClick={() => onNavigate(2)}>
+                  Оформить заказ
+                </Button>
+              </div>
+            </>
           )}
         </div>
       </div>

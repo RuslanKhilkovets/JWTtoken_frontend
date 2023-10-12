@@ -3,6 +3,7 @@ import cl from "./PayloadPage.module.scss"
 
 
 export const PayloadPage = () => {
+    localStorage.removeItem("formData");
     return(
         <div className={cl.Tab4}>
             <div className={cl.Tab4__Container}>

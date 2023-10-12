@@ -8,7 +8,7 @@ export const Tabs: React.FC = () => {
   const [activeTab, setActiveTab] = useState<number>(1);
 
   const tabsNavigateHandler = (tab: number) => {
-    if (tab !== 4) {
+    if (tab !== 4 && tab !== 3) {
       setActiveTab(tab);
       navigate(`/tab${tab}`);
     }
@@ -38,11 +38,7 @@ export const Tabs: React.FC = () => {
             >
               <p className="tabs-menu__number--text">{tabNumber}</p>
             </div>
-            {tabNumber !== 4 ? (
               <p className="tabs-menu__title">{tabTitles[tabNumber - 1]}</p>
-            ) : (
-              <p className="tabs-menu__title">{tabTitles[tabNumber - 1]}</p>
-            )}
           </li>
         ))}
       </ul>
