@@ -1,10 +1,12 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import cl from './AnalysesTable.module.scss';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import Button from '../UI/Button/Button';
 import getDataFromUrl from "../../utils/getDataFromUrl";
 import LoaderContext from '../../context/LoaderContext/LoaderContext';
 import Loader from '../Loader/Loader';
+import { useDispatch } from 'react-redux';
+import { addItemToShoppingCart, removeItemFromShoppingCart } from '../../store/shoppingCart/actions';
 
 interface Row {
   id: number;
@@ -13,41 +15,26 @@ interface Row {
   category: number;
 }
 
-const AnalysesTable = () => {
-  const [rows, setRows] = React.useState<Row[]>([]);
-  const [filteredRows, setFilteredRows] = React.useState<Row[]>([]);
-  const [clickedRows, setClickedRows] = React.useState<{ [key: number]: boolean }>({});
-
+const AnalysesTable = ({ searchParam }: any) => {
+  const [rows, setRows] = useState<Row[]>([]);
+  const [filteredRows, setFilteredRows] = useState<Row[]>([]);
+  const [clickedRows, setClickedRows] = useState<{ [key: number]: boolean }>({});
+  const dispatch = useDispatch();
   const { hideLoader, showLoader } = React.useContext(LoaderContext);
 
   const handleAddItem = (row: Row) => {
-    const isItemInCart = isItemInLocalStorage(row.id);
+    const itemId = row.id;
+    const updatedClickedRows = { ...clickedRows, [itemId]: !isItemInLocalStorage(itemId) };
+    setClickedRows(updatedClickedRows);
 
-    if (!isItemInCart) {
+    if (!isItemInLocalStorage(itemId)) {
       addItemToLocalStorage(row);
+      dispatch(addItemToShoppingCart(row));
     } else {
-      removeItemFromLocalStorage(row.id);
+      removeItemFromLocalStorage(itemId);
+      dispatch(removeItemFromShoppingCart(row));
     }
   };
-
-  React.useEffect(() => {
-    const fetchAndSetData = async () => {
-      try {
-        showLoader();
-        const url = "http://localhost:3001/rows";
-        const result: Row[] = await getDataFromUrl(url);
-        setRows(result);
-        setFilteredRows(result);
-        setClickedRows(result.reduce((acc, row) => ({ ...acc, [row.id]: isItemInLocalStorage(row.id) }), {}));
-      } catch (error) {
-        console.error(error);
-      } finally {
-        hideLoader();
-      }
-    };
-
-    fetchAndSetData();
-  }, []);
 
   const isItemInLocalStorage = (itemId: number) => {
     const cartDataString = localStorage.getItem('shoppingCart');
@@ -69,6 +56,30 @@ const AnalysesTable = () => {
     localStorage.setItem('shoppingCart', JSON.stringify(cartData));
   };
 
+  useEffect(() => {
+    const fetchAndSetData = async () => {
+      try {
+        showLoader();
+        const url = "http://localhost:3001/clientData";
+        const result: Row[] = await getDataFromUrl(url);
+        setRows(result);
+
+        const filtered = result.filter((row) =>
+          row.description.toLowerCase().includes(searchParam.toLowerCase())
+        );
+
+        setFilteredRows(filtered);
+
+        setClickedRows(result.reduce((acc, row) => ({ ...acc, [row.id]: isItemInLocalStorage(row.id) }), {}));
+      } catch (error) {
+        console.error(error);
+      } finally {
+        hideLoader();
+      }
+    };
+
+    fetchAndSetData();
+  }, [searchParam]);
 
   return (
     <>
@@ -95,15 +106,8 @@ const AnalysesTable = () => {
                     <button
                       style={{ filter: clickedRows[row.id] ? 'grayscale(100%)' : 'none' }}
                       className={cl.AnalysesTable__AddBtn}
-                      onClick={() => {
-                        handleAddItem(row);
-                        setClickedRows((prevState) => ({
-                          ...prevState,
-                          [row.id]: !isItemInLocalStorage(row.id),
-                        }));
-                      }}
-                    >
-                    </button>
+                      onClick={() => handleAddItem(row)}
+                    ></button>
                   </TableCell>
                 </TableRow>
               ))}

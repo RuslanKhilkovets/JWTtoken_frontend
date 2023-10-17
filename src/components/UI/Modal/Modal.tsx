@@ -3,28 +3,51 @@ import './Modal.scss';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import Button from '../Button/Button';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { clearShoppingCart, removeItemFromShoppingCart } from '../../../store/shoppingCart/actions';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  updateCartData: any;
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [totalPriceCount, setTotalPriceCount] = useState(0);
+  const [cartData, setCartData] = useState([]); 
   const cartDataString = localStorage.getItem('shoppingCart');
-  const cartData = cartDataString ? JSON.parse(cartDataString) : [];
-
-  const navigate = useNavigate()
-
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    const cartDataString = localStorage.getItem('shoppingCart');
+    const cartData = cartDataString ? JSON.parse(cartDataString) : [];
+    setCartData(cartData); 
     const total = cartData.reduce((acc: number, item: any) => {
       return acc + item.price;
     }, 0);
-    
     setTotalPriceCount(total);
-  }, [cartData]);
+  }, [cartDataString]);
 
+  const navigate = useNavigate();
+
+  const handleRemoveItem = (row: any) => {
+    const updatedCartData = cartData.filter((item: any) => item.id !== row.id);
+    setCartData(updatedCartData); 
+    localStorage.setItem('shoppingCart', JSON.stringify(updatedCartData));
+    setTotalPriceCount(updatedCartData.reduce((acc, item) => acc + item.price, 0));
+    dispatch(removeItemFromShoppingCart(row))
+  };
+  
+  const handleClearCart = () => {
+    setCartData([]); 
+    localStorage.removeItem("shoppingCart");
+    dispatch(clearShoppingCart())
+  };
+
+  const onNavigate = (tabNumber: number) => {
+    navigate(`../tab${tabNumber}`);
+    handleClose();
+  };
   if (!isOpen) {
     return null;
   }
@@ -32,20 +55,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const handleClose = () => {
     onClose();
   };
-  
-  const handleRemoveItem = (row: any) => {
-    const updatedCartData = cartData.filter((item: any) => item.id !== row.id);
-    localStorage.setItem('shoppingCart', JSON.stringify(updatedCartData));
-    setTotalPriceCount(updatedCartData.reduce((acc, item) => acc + item.price, 0));
-  };
 
-  const handleClearCart = () => {
-    localStorage.setItem("shoppingCart", "[]");
-  };
-  const onNavigate = (tabNumber: number) => {
-      navigate(`../tab${tabNumber}`)
-      handleClose();
-  }
   return (
     <div className="modal-overlay">
       <div className="modal">
@@ -106,7 +116,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             </>
           ) : (
             <>
-                            <div className="modal-buttons">
+              <div className="modal-buttons">
                 <Button active onClick={() => onNavigate(1)}>
                   Добавить анализы
                 </Button>

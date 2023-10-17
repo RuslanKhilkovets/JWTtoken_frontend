@@ -12,12 +12,7 @@ export const Tab1 = () => {
     
     return(
         <>
-
             {
-                isLoading
-                ?
-                <Loader/>
-                :
                 <>
                     <Analyses/>
                 </>

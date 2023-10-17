@@ -10,7 +10,7 @@ import { AnalysesSidebar } from '../AnalysesSidebar/AnalysesSidebar';
 export const Analyses: React.FC = () => {
   const [activePanel, setActivePanel] = React.useState<string | false>('');
   const [breadcrumbLinks, setBreadcrumbLinks] = React.useState<string[]>([]);
-  const [formData, setFormData] = React.useState("");
+  const [searchParam, setSearchParam] = React.useState("");
 
 
 
@@ -44,8 +44,8 @@ export const Analyses: React.FC = () => {
             breadcrumbLinks={breadcrumbLinks}
             onBreadcrumbClick={(index: number) => handleBreadcrumbClick(breadcrumbLinks[index])}
           />
-          <AnalysesForm />
-          <AnalysesTable />
+          <AnalysesForm setSearchParam={setSearchParam}/>
+          <AnalysesTable searchParam={searchParam}/>
         </div>
       </div>
     </div>

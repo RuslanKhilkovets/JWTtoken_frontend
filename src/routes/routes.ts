@@ -7,7 +7,7 @@ import RegistrationPage from "../components/pages/Registration/RegistrationPage"
 import Tab1 from "../components/pages/Tab1/Tab1";
 import Tab2 from "../components/pages/Tab2/Tab2";
 import Tab3 from '../components/pages/Tab3/Tab3';
-import Tab4, { PayloadPage } from '../components/pages/PayloadPage/PayloadPage';
+import PayloadPage from '../components/pages/PayloadPage/PayloadPage';
 
 export interface IRoutes {
     path: string;
@@ -25,7 +25,6 @@ export const publicRoutes: IRoutes[] = [
 export const privateRoutes: IRoutes[] = [
     { path: "/*",component: MainPage},
     { path: "/payload",component: PayloadPage},
-
     { path: "*", component: ErrorPage },
 ];
 
@@ -33,4 +32,5 @@ export const tabsRoutes: IRoutes[] = [
     { path: "/tab1", component: Tab1 },
     { path: "/tab2", component: Tab2 },
     { path: "/tab3", component: Tab3 },
+    { path: "/",component: Tab1},
 ];

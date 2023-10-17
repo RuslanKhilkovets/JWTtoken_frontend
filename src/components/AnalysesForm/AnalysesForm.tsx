@@ -14,7 +14,7 @@ export interface IGetFormData {
     searchParam: string;
 }
 
-export const AnalysesForm = () => {
+export const AnalysesForm = ({setSearchParam}: any) => {
     const [formData, setFormData] = React.useState<IGetFormData>({
         city: "",
         sex: "",
@@ -29,7 +29,9 @@ export const AnalysesForm = () => {
             ...prevData,
             [name]: value
         }));
-        console.log(formData)
+        if(name === "searchParam"){
+            setTimeout(() => setSearchParam(value), 100)
+        }
     };
     
   return (
