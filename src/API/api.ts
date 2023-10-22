@@ -1,5 +1,5 @@
     import axios from 'axios';
-    import { getToken, setToken, removeToken } from './localStorage';
+    import { getToken, setToken, removeToken } from './cookies';
     import { refresh } from './auth';
 
     const API_URL = 'http://localhost:5000'; 

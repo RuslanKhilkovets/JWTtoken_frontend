@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import './Tabs.scss';
 import { useNavigate } from 'react-router-dom';
+
+
+import './Tabs.scss';
+
+
+
 
 export const Tabs: React.FC = () => {
   const navigate = useNavigate();

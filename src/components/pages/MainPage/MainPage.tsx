@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import {  tabsRoutes } from '../../../routes/routes';
+
+import { tabsRoutes } from '../../../routes/routes';
+
 import Tabs from '../../Tabs/Tabs';
 
 const MainPage: React.FC = () => {

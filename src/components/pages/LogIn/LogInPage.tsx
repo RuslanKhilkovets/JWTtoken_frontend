@@ -1,4 +1,6 @@
 import * as React from 'react';
+
+
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -7,11 +9,19 @@ import IconButton from '@mui/material/IconButton'; // Додано IconButton
 import InputAdornment from '@mui/material/InputAdornment'; // Додано InputAdornment
 import Visibility from '@mui/icons-material/Visibility'; // Додано іконку для відображення пароля
 import VisibilityOff from '@mui/icons-material/VisibilityOff'; // Додано іконку для приховання пароля
-import cl from './LogInPage.module.scss';
+
+
+
 import { login } from '../../../API/auth';
-import { setToken } from '../../../API/localStorage';
+import { setToken } from '../../../API/cookies';
 import { useNavigate } from 'react-router-dom';
+
 import AuthContext from '../../../context/AuthContext/AuthContext';
+
+
+import cl from './LogInPage.module.scss';
+
+
 
 export interface IGetLoginData {
   password: string;
@@ -50,7 +60,7 @@ export const LogInPage: React.FC = () => {
         setToken('refreshToken', refreshToken);
         changeIsAuth();
         console.log(isAuth);
-        navigate('/data-table');
+        navigate('/');
     } catch (e) {
         console.log(e);
     }

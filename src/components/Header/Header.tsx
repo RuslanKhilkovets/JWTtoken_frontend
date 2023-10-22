@@ -1,12 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
-import cl from './Header.module.scss';
-import { Typography, Button } from '@mui/material';
-import { removeToken } from '../../API/localStorage';
-import AuthContext from '../../context/AuthContext/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import Modal from '../UI/Modal/Modal';
-import { useSelector } from 'react-redux';
 
+import { Typography, Button } from '@mui/material';
+
+import AuthContext from '../../context/AuthContext/AuthContext';
+import ShoppingCart from '../ShoppingCart/ShoppingCart';
+
+
+import { removeToken } from '../../API/cookies';
+import cl from './Header.module.scss';
 
 
 interface HeaderProps {}
@@ -18,11 +20,18 @@ export const Header: React.FC<HeaderProps> = () => {
 
   const initialCartData = localStorage.getItem('shoppingCart');  
   const [cartData, setCartData] = useState(initialCartData ? JSON.parse(initialCartData) : []);
-  const updateCartData = (newCartData) => {
+  const updateCartData = (newCartData: any) => {
     setCartData(newCartData);
   };
+  
+  const cartDataString = localStorage.getItem('shoppingCart');
+  
+  useEffect(() => {
+    const cartData = cartDataString ? JSON.parse(cartDataString) : [];
+    setCartData(cartData);
+  }, [cartData]);
 
-  const productsCount = useSelector((state : any) => state.shoppingCart.shoppingCartItems.length)
+  const productsCount = cartData.length;
 
   const handleLogOut = () => {
     removeToken('jwtToken');
@@ -40,6 +49,10 @@ export const Header: React.FC<HeaderProps> = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+
+
+  
   return (
     <header className={cl.Header}>
       <div className={cl.Header__Container}>
@@ -54,7 +67,7 @@ export const Header: React.FC<HeaderProps> = () => {
           </Button>
         </div>
       </div>
-      <Modal isOpen={isModalOpen} onClose={closeModal} updateCartData={updateCartData} />
+      <ShoppingCart isOpen={isModalOpen} onClose={closeModal} updateCartData={updateCartData} />
     </header>
   );
 };

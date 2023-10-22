@@ -1,13 +1,17 @@
 import * as React from 'react';
+
+
 import { styled } from '@mui/material/styles';
+
+
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
-import MuiAccordionSummary, {
-  AccordionSummaryProps,
-} from '@mui/material/AccordionSummary';
+import MuiAccordionSummary, {AccordionSummaryProps} from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+
+
 import cl from "./AnalysesSidebar.module.scss";
 
 const Accordion = styled((props: AccordionProps) => (
@@ -51,20 +55,24 @@ export const AnalysesSidebar: React.FC<AnalysesSidebarProps> = ({
   breadcrumbLinks,
   activePanel,
 }) => {
+  const [expandedPanels, setExpandedPanels] = React.useState<{ [key: string]: boolean }>({});
+
   const handleChange = (panel: string) => (
     event: React.SyntheticEvent,
     newExpanded: boolean
   ) => {
+    setExpandedPanels((prevExpandedPanels) => ({
+      ...prevExpandedPanels,
+      [panel]: newExpanded && !prevExpandedPanels[panel], // Розгорнути лише, якщо акордеон був закритий
+    }));
     if (newExpanded) {
       onBreadcrumbClick(panel);
-    } else {
-      onBreadcrumbClick('');
     }
   };
-
+  
   return (
     <div>
-      <Accordion expanded={activePanel === 'ЗАГАЛЬНІ АНАЛІЗИ'} onChange={handleChange('ЗАГАЛЬНІ АНАЛІЗИ')}>
+      <Accordion expanded={expandedPanels['ЗАГАЛЬНІ АНАЛІЗИ']} onChange={handleChange('ЗАГАЛЬНІ АНАЛІЗИ')}>
         <AccordionSummary>
           <Typography color={"rgba(0, 83, 159, 1)"}>
             ЗАГАЛЬНІ АНАЛІЗИ
@@ -90,11 +98,10 @@ export const AnalysesSidebar: React.FC<AnalysesSidebarProps> = ({
                 Аналізи крові из вены
               </Link>
             </li>
-            {/* Додайте інші пункти */}
           </ul>
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={activePanel === 'ЗАГАЛЬНІ'} onChange={handleChange('ЗАГАЛЬНІ')}>
+      <Accordion expanded={expandedPanels['ЗАГАЛЬНІ']} onChange={handleChange('ЗАГАЛЬНІ')}>
         <AccordionSummary>
           <Typography color={"rgba(0, 83, 159, 1)"}>
             ЗАГАЛЬНІ 
@@ -120,7 +127,7 @@ export const AnalysesSidebar: React.FC<AnalysesSidebarProps> = ({
                 Аналізи крові из вены
               </Link>
             </li>
-            {/* Додайте інші пункти */}
+            {/* Додайте інші пункти */} 
           </ul>
         </AccordionDetails>
       </Accordion>

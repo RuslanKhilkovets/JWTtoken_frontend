@@ -6,4 +6,4 @@ export function validateEmail(email: string) {
 export function validatePassword(password: string) {
     const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{7,}$/
     return passwordPattern.test(password);
-}
+} 

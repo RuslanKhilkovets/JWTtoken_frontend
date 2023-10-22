@@ -1,4 +1,6 @@
 import * as React from 'react';
+
+
 import Loader from '../../Loader/Loader';
 import Tabs from '../../Tabs/Tabs';
 import Analyses from '../../Analyses/Analyses';
@@ -12,11 +14,7 @@ export const Tab1 = () => {
     
     return(
         <>
-            {
-                <>
-                    <Analyses/>
-                </>
-            }
+            <Analyses/>
         </>
     )
 }

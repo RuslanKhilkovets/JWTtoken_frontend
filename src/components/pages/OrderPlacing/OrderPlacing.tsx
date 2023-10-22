@@ -1,4 +1,12 @@
-import React, { useState } from "react";
+// Остаточна версія коду Tab2
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+import InputMask from "react-input-mask";
+
+import MaleIcon from "@mui/icons-material/Male";
+import FemaleIcon from "@mui/icons-material/Female";
+import { Phone, Email } from "@mui/icons-material";
 import {
   Checkbox,
   FormControl,
@@ -13,25 +21,31 @@ import {
   SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import Card from "../../Card/Card";
-import Button from "../../UI/Button/Button";
+
+import dayjs, { Dayjs } from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import uk from 'dayjs/locale/uk';
+
+import { ukUA } from '@mui/x-date-pickers/locales';
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import InputMask from "react-input-mask";
-import MaleIcon from "@mui/icons-material/Male";
-import FemaleIcon from "@mui/icons-material/Female";
 
-import { Phone, Email, CalendarToday, AccountCircle } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import cl from "./Tab2.module.scss";
-import { Tab } from "semantic-ui-react";
+
 import { getItemFromStorage, setItemInStorage } from "../../../utils/localStorageItems";
 
-dayjs.extend(customParseFormat);
+import Card from "../../Card/Card";
+import Button from "../../UI/Button/Button";
 
-const DATE_FORMAT = "DD/MM/YY";
+import cl from "./OrderPlacing.module.scss";
+
+
+
+
+
+dayjs.extend(customParseFormat);
+dayjs.locale('uk');
+
+const DATE_FORMAT = "DD.MM.YYYY";
 
 interface IFormData {
   place: string;
@@ -39,12 +53,11 @@ interface IFormData {
   name: string;
   patronymic: string;
   phone: string;
-  sex: "Мужской" | "Женский";
-  birthdayDate: string | null;
+  sex: "Мужской" | "Женский" | "";
+  birthdayDate: Dayjs | string | null;
   email: string;
-  paymentMethod: "inSite" | "erip" | "inPlace";
+  paymentMethod: "На сайті" | "В ЕРІП" | "На місці" | "";
 }
-dayjs.locale('uk');
 
 export const Tab2 = () => {
   const navigate = useNavigate();
@@ -58,16 +71,28 @@ export const Tab2 = () => {
     sex: "",
     birthdayDate: null,
     email: "",
-    paymentMethod: "inSite",
+    paymentMethod: "",
   });
 
   const [emailError, setEmailError] = useState<string>("");
   const [formErrors, setFormErrors] = useState<string>("");
+  const [checkedCheckboxes, setCheckedCheckboxes] = useState({
+    preparationRules: false,
+    personalDataProcessing: false,
+    serviceAgreement: false,
+  });
 
-  React.useEffect(() => {
+  useEffect(() => {
     const storedData = getItemFromStorage("formData");
     if (storedData) {
-      setFormData(storedData);
+      const birthdayDate = storedData.birthdayDate
+        ? dayjs(storedData.birthdayDate, DATE_FORMAT)
+        : null;
+      setFormData((prevData) => ({
+        ...prevData,
+        ...storedData,
+        birthdayDate,
+      }));
     }
   }, []);
 
@@ -83,15 +108,13 @@ export const Tab2 = () => {
   };
 
   const handleDatePickerChange = (date: any) => {
-    if (date) {
-      const formattedDate = dayjs(date).format("DD/MM/YYYY");
-      setFormData((prevData) => ({
-        ...prevData,
-        birthdayDate: formattedDate,
-      }));
-    }
+    const formattedDate = dayjs(date);
+    setFormData((prevData) => ({
+      ...prevData,
+      birthdayDate: formattedDate,
+    }));
   };
-  
+
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setFormData((prevData) => ({
@@ -118,24 +141,42 @@ export const Tab2 = () => {
       !formData.phone ||
       !formData.email ||
       !formData.place ||
-      !formData.paymentMethod
+      !formData.paymentMethod ||
+      !checkedCheckboxes.preparationRules ||
+      !checkedCheckboxes.personalDataProcessing ||
+      !checkedCheckboxes.serviceAgreement
     ) {
-      setFormErrors("Заповніть всі поля для переходу на наступну сторінку");
+      setFormErrors("Заповніть всі поля та відзначте всі обов'язкові чекбокси для переходу на наступну сторінку");
       return false;
     }
     return true;
   };
 
   const onFormSubmit = () => {
-    const shoppingCart = getItemFromStorage("shoppingCart") || [];
-    if (validateForm() && shoppingCart.length > 0) {
-      setItemInStorage("formData", formData);
-      navigate("../tab3");
-    } else {
-      setFormErrors(shoppingCart.length === 0 ? "Додайте щось до корзини перед оформленням замовлення" : "Заповніть всі поля для переходу на наступну сторінку");
+    if (validateForm()) {
+      const shoppingCart = getItemFromStorage("shoppingCart") || [];
+      if (shoppingCart.length > 0) {
+        setItemInStorage("formData", {
+          ...formData,
+          birthdayDate: formData.birthdayDate
+            ? dayjs(formData.birthdayDate, DATE_FORMAT).format(DATE_FORMAT)
+            : null,
+        });
+        navigate("../tab3");
+      } else {
+        setFormErrors("Додайте щось до корзини перед оформленням замовлення");
+      }
     }
   };
-  
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    setCheckedCheckboxes((prevChecked) => ({
+      ...prevChecked,
+      [name]: checked,
+    }));
+  };
+
   return (
     <div className={cl.Tab2}>
       <div className={cl.Tab2__Container}>
@@ -170,7 +211,7 @@ export const Tab2 = () => {
                   onChange={handleInputChange}
                   inputProps={{
                     pattern: "^[A-Za-z]+$",
-                    title: "Фамилия повинна містити лише букви",
+                    title: "Прізвище повинне містити лише букви",
                   }}
                   InputProps={{
                     sx: {
@@ -226,7 +267,11 @@ export const Tab2 = () => {
                   </Select>
                 </FormControl>
                 <FormControl fullWidth>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    adapterLocale={uk}
+                    localeText={ukUA.components.MuiLocalizationProvider.defaultProps.localeText}
+                  >
                     <DatePicker
                       label="Дата рождения*"
                       value={formData.birthdayDate}
@@ -288,15 +333,33 @@ export const Tab2 = () => {
               <div className={cl.Tab2__Checkboxes}>
                 <FormGroup>
                   <FormControlLabel
-                    control={<Checkbox />}
+                    control={
+                      <Checkbox
+                        name="preparationRules"
+                        checked={checkedCheckboxes.preparationRules}
+                        onChange={handleCheckboxChange}
+                      />
+                    }
                     label="С правилами подготовки к исследованию ознакомлен. Несоблюдение правил подготовки может влиять на корректность результата"
                   />
                   <FormControlLabel
-                    control={<Checkbox />}
+                    control={
+                      <Checkbox
+                        name="personalDataProcessing"
+                        checked={checkedCheckboxes.personalDataProcessing}
+                        onChange={handleCheckboxChange}
+                      />
+                    }
                     label="Я даю согласие на обработку персональных данных"
                   />
                   <FormControlLabel
-                    control={<Checkbox />}
+                    control={
+                      <Checkbox
+                        name="serviceAgreement"
+                        checked={checkedCheckboxes.serviceAgreement}
+                        onChange={handleCheckboxChange}
+                      />
+                    }
                     label="Я согласен с условиями Публичного договора о возмездном оказании медицинских услуг"
                   />
                 </FormGroup>
@@ -323,7 +386,7 @@ export const Tab2 = () => {
                     label="Оплатить в ЕРИП"
                   />
                   <FormControlLabel
-                    value="inPlace"
+                    value="На місці"
                     control={<Radio />}
                     label="Оплатить в пункте"
                   />
@@ -351,7 +414,12 @@ export const Tab2 = () => {
         <div style={{ color: "red", margin: "20px 0" }}>{formErrors}</div>
       )}
       <div className={cl.Tab2__ButtonContainer}>
-        <Button active className={cl.Tab2__Button} onClick={onFormSubmit}>
+        <Button
+          disabled={false}
+          active={true}
+          className={cl.Tab2__Button}
+          onClick={onFormSubmit}
+        >
           Далее
         </Button>
       </div>

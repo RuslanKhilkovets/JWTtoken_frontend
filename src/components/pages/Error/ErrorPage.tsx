@@ -1,6 +1,8 @@
 import * as React from 'react';
-import cl from "./ErrorPage.module.scss"
 import { Link } from 'react-router-dom';
+
+
+import cl from "./ErrorPage.module.scss"
 
 
 export const ErrorPage = () => {

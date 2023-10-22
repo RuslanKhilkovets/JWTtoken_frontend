@@ -1,12 +1,19 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import cl from "./RegistrationPage.module.scss"
+
+
 import registration from '../../../API/registration';
 import { validateEmail, validatePassword } from '../../../utils/validations';
-import { useNavigate } from 'react-router-dom';
+
+
+import cl from "./RegistrationPage.module.scss"
+
 
 export interface IGetRegisterData {
     Password: string;

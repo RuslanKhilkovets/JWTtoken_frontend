@@ -5,7 +5,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import "./App.css"
 import "./nullstyle.css"
-import { AppRouter } from './components/AppRouter';
+import { AppRouter } from './routes/AppRouter';
 import { Provider } from 'react-redux';
 import store from './store';
 import Header from './components/Header/Header';

@@ -1,5 +1,7 @@
 import { Typography } from "@mui/material";
+
 import cl from "./Loader.module.scss"
+
 
 const Loader = () => (
     <div className={cl.Container}>

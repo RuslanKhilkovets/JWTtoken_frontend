@@ -1,8 +1,13 @@
 import * as React from 'react';
-import cl from "./HomePage.module.scss"
+import { useNavigate } from 'react-router-dom';
+
+
 import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+
+
+import cl from "./HomePage.module.scss"
+
 
 export const HomePage: React.FC = () => {
     const navigate = useNavigate();

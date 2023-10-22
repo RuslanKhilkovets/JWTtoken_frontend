@@ -1,9 +1,10 @@
-import { useContext, useState } from "react";
-import AuthContext from "./AuthContext";
+import { useState } from "react";
 
-interface IAuthContextProviderProps {
-  children: React.ReactNode;
-}
+import AuthContext from "./AuthContext";
+import IAuthContextProviderProps from "../../types/IAuthContextProviderProps";
+
+
+
 
 export const AuthContextProvider = ({ children }: IAuthContextProviderProps) => {
     const [isAuth, setIsAuth] = useState(true)

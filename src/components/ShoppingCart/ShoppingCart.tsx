@@ -1,53 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import './Modal.scss';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import Button from '../Button/Button';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { clearShoppingCart, removeItemFromShoppingCart } from '../../../store/shoppingCart/actions';
 
-interface ModalProps {
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+
+
+import Button from '../UI/Button/Button';
+import './ShoppingCart.scss';
+
+
+interface IModalProps {
   isOpen: boolean;
   onClose: () => void;
   updateCartData: any;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+const ShoppingCart: React.FC<IModalProps> = ({ isOpen, onClose }) => {
   const [totalPriceCount, setTotalPriceCount] = useState(0);
-  const [cartData, setCartData] = useState([]); 
+  const [cartData, setCartData] = useState([]);
+  const [itemRemoved, setItemRemoved] = useState(false); // Track if an item is removed
   const cartDataString = localStorage.getItem('shoppingCart');
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    const cartDataString = localStorage.getItem('shoppingCart');
     const cartData = cartDataString ? JSON.parse(cartDataString) : [];
-    setCartData(cartData); 
+    setCartData(cartData);
     const total = cartData.reduce((acc: number, item: any) => {
       return acc + item.price;
     }, 0);
     setTotalPriceCount(total);
-  }, [cartDataString]);
+  }, [cartDataString, itemRemoved]); // Include itemRemoved in the dependency array
 
   const navigate = useNavigate();
 
   const handleRemoveItem = (row: any) => {
     const updatedCartData = cartData.filter((item: any) => item.id !== row.id);
-    setCartData(updatedCartData); 
+    setCartData(updatedCartData);
     localStorage.setItem('shoppingCart', JSON.stringify(updatedCartData));
-    setTotalPriceCount(updatedCartData.reduce((acc, item) => acc + item.price, 0));
-    dispatch(removeItemFromShoppingCart(row))
+    setTotalPriceCount(updatedCartData.reduce((acc, item: any) => acc + item.price, 0));
+    setItemRemoved(true); // Set the state to indicate an item is removed
   };
-  
+
   const handleClearCart = () => {
-    setCartData([]); 
-    localStorage.removeItem("shoppingCart");
-    dispatch(clearShoppingCart())
+    setCartData([]);
+    localStorage.removeItem('shoppingCart');
   };
 
   const onNavigate = (tabNumber: number) => {
     navigate(`../tab${tabNumber}`);
     handleClose();
   };
+
   if (!isOpen) {
     return null;
   }
@@ -61,7 +62,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       <div className="modal">
         <div className="modal-header">
           <div className="modal-header__heading">
-            <div className="modal-header__icon"></div>
+            <div className={`modal-header__icon ${itemRemoved ? 'item-removed-icon' : ''}`}></div>
             <p className="modal-header__title">Моя корзина</p>
           </div>
           <button className="close-button" onClick={handleClose}></button>
@@ -89,7 +90,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                         <TableCell align="center">{row.category}</TableCell>
                         <TableCell>
                           <button
-                            className={"delete-button"}
+                            className="delete-button"
                             onClick={() => handleRemoveItem(row)}
                           ></button>
                         </TableCell>
@@ -132,4 +133,4 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default Modal;
+export default ShoppingCart;

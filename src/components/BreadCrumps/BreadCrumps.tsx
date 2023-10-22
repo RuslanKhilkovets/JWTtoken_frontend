@@ -1,26 +1,24 @@
-import * as React from 'react';
-import Typography from '@mui/material/Typography';
+import React from 'react';
+
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 
 import cl from "./BreadCrumbs.module.scss";
 
-export interface BreadCrumbsProps {
+
+
+
+export interface IBreadCrumbsProps {
   breadcrumbLinks: string[];
   onBreadcrumbClick: (index: number) => void;
 }
 
-export const BreadCrumps: React.FC<BreadCrumbsProps> = ({
+const BreadCrumbs: React.FC<IBreadCrumbsProps> = ({
   breadcrumbLinks,
   onBreadcrumbClick,
 }) => {
-  function handleDivClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    event.preventDefault();
-    console.info('You clicked a breadcrumb (div).');
-  }
-
   return (
-    <div role="presentation" onClick={(e) => handleDivClick(e)}>
+    <div className={cl.BreadCrumbs}>
       <Breadcrumbs aria-label="breadcrumb">
         {breadcrumbLinks.map((link, index) => (
           <Link
@@ -37,4 +35,4 @@ export const BreadCrumps: React.FC<BreadCrumbsProps> = ({
   );
 };
 
-export default BreadCrumps;
+export default BreadCrumbs;
