@@ -1,0 +1,31 @@
+.BreadCrumbs{
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    &__Link{
+        color: rgba(0, 83, 159, 1);
+        font-family: Lato;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 29px;
+        letter-spacing: 0.15px;
+        text-align: left;
+    }
+    &__Button{
+        display: none;
+        width: 32px;
+        height: 32px;
+        background: url("../../icons/filter.svg") no-repeat;
+        background-size: contain;
+        cursor: pointer;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .BreadCrumbs{
+        &__Button{
+            display: block;
+        }
+    }
+}

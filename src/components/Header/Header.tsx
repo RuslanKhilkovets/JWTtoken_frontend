@@ -1,37 +1,28 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { Typography, Button } from '@mui/material';
+import { Button } from '@mui/material';
 
 import AuthContext from '../../context/AuthContext/AuthContext';
 import ShoppingCart from '../ShoppingCart/ShoppingCart';
 
-
 import { removeToken } from '../../API/cookies';
+import { getItemFromStorage, setItemInStorage } from '../../utils/localStorageItems';
+
 import cl from './Header.module.scss';
+import ShoppingCartItemsCount, { ShoppingCartItemsCountContext } from '../../context/ShoppingCartItemsCountContext/ShoppingCartItemsCountContext';
 
-
-interface HeaderProps {}
-
-export const Header: React.FC<HeaderProps> = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { changeIsAuth } = useContext(AuthContext);
+export const Header: React.FC = () => {
   const navigate = useNavigate();
+  const { changeIsAuth } = useContext(AuthContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const initialCartData = localStorage.getItem('shoppingCart');  
-  const [cartData, setCartData] = useState(initialCartData ? JSON.parse(initialCartData) : []);
-  const updateCartData = (newCartData: any) => {
-    setCartData(newCartData);
-  };
-  
-  const cartDataString = localStorage.getItem('shoppingCart');
-  
-  useEffect(() => {
-    const cartData = cartDataString ? JSON.parse(cartDataString) : [];
-    setCartData(cartData);
-  }, [cartData]);
+  const { itemsCount } = React.useContext(ShoppingCartItemsCountContext)
 
-  const productsCount = cartData.length;
+
+  const [shoppingItemsCount, setShoppingItemsCount] = useState(itemsCount)
+
+  useEffect(() => {setShoppingItemsCount(itemsCount)}, [itemsCount])
 
   const handleLogOut = () => {
     removeToken('jwtToken');
@@ -50,24 +41,20 @@ export const Header: React.FC<HeaderProps> = () => {
     setIsModalOpen(false);
   };
 
-
-
-  
   return (
     <header className={cl.Header}>
       <div className={cl.Header__Container}>
-
-        <Typography variant="h4" gutterBottom>
+        <Link to={"../"} className={cl.Header__Link}>
           Synevo
-        </Typography>
+        </Link>
         <div className={cl.Header__UI}>
-          <button data-text={productsCount} className={cl.Header__AddBtn} onClick={openModal}></button>
+          <button data-text={shoppingItemsCount} className={cl.Header__AddBtn} onClick={openModal}></button>
           <Button variant="contained" color="success" onClick={handleLogOut}>
             Log Out
           </Button>
         </div>
       </div>
-      <ShoppingCart isOpen={isModalOpen} onClose={closeModal} updateCartData={updateCartData} />
+      <ShoppingCart isOpen={isModalOpen} onClose={closeModal}  />
     </header>
   );
 };

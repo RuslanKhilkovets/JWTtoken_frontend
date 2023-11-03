@@ -1,13 +1,7 @@
 import * as React from 'react';
 import cl from "./Button.module.scss"
+import IButtonProps from '../../../types/IButtonProps';
 
-interface IButtonProps {
-    children: React.ReactNode;
-    active: boolean | (() => boolean);
-    className?: string;
-    onClick?: any;
-    disabled?: boolean;
-}
 
 const Button: React.FC<IButtonProps> = ({ children, onClick, active, className, disabled }) => {
     return (

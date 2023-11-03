@@ -1,5 +1,5 @@
 export default interface IGetFormData {
     city: string,
-    sex: string;
+    gender: string;
     searchParam: string;
 }

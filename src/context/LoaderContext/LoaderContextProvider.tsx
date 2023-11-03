@@ -1,10 +1,9 @@
 // contexts/LoaderContext.js
 import * as React from 'react';
 import LoaderContext from './LoaderContext';
+import ILoadingContextProvider from '../../types/ILoadingContextProvider';
 
-interface ILoadingContextProvider {
-    children: React.ReactNode;
-  }
+
   
 export function LoaderContextProvider({ children }: ILoadingContextProvider) {
   const [isLoading, setIsLoading] = React.useState(false);

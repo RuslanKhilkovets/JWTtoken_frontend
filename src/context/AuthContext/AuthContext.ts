@@ -1,9 +1,7 @@
 import { createContext } from "react";
+import IAuthContext from "../../types/IAuthContext";
 
-interface IAuthContext {
-  isAuth: boolean;
-  changeIsAuth: () => void;
-}
+
 
 export const AuthContext = createContext<IAuthContext>({
   isAuth: false,

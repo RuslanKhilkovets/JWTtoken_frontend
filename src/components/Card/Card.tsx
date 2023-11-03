@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 
-import CustomSelect from '../UI/Select/Select';
 import cl from "./Card.module.scss"
 
 

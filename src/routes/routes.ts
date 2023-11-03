@@ -1,13 +1,19 @@
 import * as React from 'react';
-import ErrorPage from "../components/pages/Error/ErrorPage";
-import HomePage from "../components/pages/Home/HomePage";
-import LogInPage from "../components/pages/LogIn/LogInPage";
-import MainPage from "../components/pages/MainPage/MainPage";
-import RegistrationPage from "../components/pages/Registration/RegistrationPage";
-import Tab1 from "../components/pages/AnalysesSelection/AnalysesSelection";
-import Tab2 from "../components/pages/OrderPlacing/OrderPlacing";
-import Tab3 from '../components/pages/DataConfirmation/DataConfirmation';
-import PayloadPage from '../components/pages/PayloadPage/PayloadPage';
+
+
+
+
+import ErrorPage from '../pages/Error/ErrorPage';
+import HomePage from "../pages/Home/HomePage";
+import LogInPage from "../pages/LogIn/LogInPage";
+import MainPage from "../pages/MainPage/MainPage";
+import RegistrationPage from "../pages/Registration/RegistrationPage";
+import PayloadPage from '../pages/PayloadPage/PayloadPage';
+
+
+import AnalysesSelection from '../pages/tabs/AnalysesSelection/AnalysesSelection';
+import OrderPlacing from '../pages/tabs/OrderPlacing/OrderPlacing';
+import DataConfirmation from '../pages/tabs/DataConfirmation/DataConfirmation';
 
 export interface IRoutes {
     path: string;
@@ -29,8 +35,9 @@ export const privateRoutes: IRoutes[] = [
 ];
 
 export const tabsRoutes: IRoutes[] = [
-    { path: "/tab1", component: Tab1 },
-    { path: "/tab2", component: Tab2 },
-    { path: "/tab3", component: Tab3 },
-    { path: "/",component: Tab1},
+    { path: "/tab1", component: AnalysesSelection },
+    { path: "/tab2", component: OrderPlacing },
+    { path: "/tab3", component: DataConfirmation },
+    { path: "/",component: AnalysesSelection},
+    { path: "*", component: ErrorPage },
 ];

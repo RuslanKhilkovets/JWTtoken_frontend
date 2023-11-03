@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IGetRegisterData } from "../components/pages/Registration/RegistrationPage";
+import { IGetRegisterData } from "../types/IGetRegisterData";
 
 export default async function registration(url: string, registerData: IGetRegisterData){
     const headers = {
@@ -15,4 +15,3 @@ export default async function registration(url: string, registerData: IGetRegist
         console.log(e)
     }
 }
-

@@ -1,11 +1,17 @@
 import * as React from 'react';
-import cl from "./InfoAnalyses.module.scss";
+
+
 import MailOutlineIcon from "@mui/icons-material/MailOutline"; 
 import PhoneIcon from "@mui/icons-material/Phone";
 import DateRangeIcon from "@mui/icons-material/DateRange"; 
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"; 
 import PaymentIcon from "@mui/icons-material/Payment"; 
 import RoomIcon from "@mui/icons-material/Room"; 
+
+
+import cl from "./InfoAnalyses.module.scss";
+
+
 
 export const InfoAnalyses = ({ title, text, icon }: any) => {
   const getIcon = () => {

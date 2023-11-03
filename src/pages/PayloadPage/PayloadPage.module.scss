@@ -1,0 +1,48 @@
+.Tab4{
+    margin: 0 auto;
+    width: min(1200px, 100%);
+    padding: 20px;
+    &__Container{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+    }
+    &__Image{
+        width: 100%;
+        height: 351px;
+        background: url("../../icons/Tab4-Image.png") no-repeat;
+        background-size: contain;
+    }
+    &__Content{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 40px;
+    }
+    &__Title{
+        font-family: "Lato", sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 29px;
+        letter-spacing: 0.15px;
+        color: rgba(46, 59, 82, 1);
+    }
+    &__Subtitle{
+        font-family: "Lato", sans-serif;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 22px;
+        letter-spacing: 0em;
+        color: rgba(46, 59, 82, 1);
+    }
+
+}
+
+@media (max-width: 768px){
+    .Tab4{
+        &__Container{
+            grid-template-columns: 1fr;
+        }
+    }
+}
