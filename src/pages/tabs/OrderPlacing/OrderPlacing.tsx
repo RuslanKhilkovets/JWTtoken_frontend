@@ -32,7 +32,6 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
 import { getItemFromStorage, setItemInStorage } from "../../../utils/localStorageItems";
 import { DATE_FORMAT } from "../../../globals/dateFormat";
-import IFormData from "../../../types/IFormData";
 
 
 import Card from "../../../components/Card/Card";
@@ -44,6 +43,7 @@ import { placeSelectData } from "../../../globals/selectData";
 import CustomSelect from "../../../components/UI/Select/Select";
 
 import cl from "./OrderPlacing.module.scss";
+import IFormDataWithCheckboxes from "../../../types/IFormDataWithCheckboxes";
 
 
 
@@ -57,7 +57,7 @@ dayjs.locale('uk');
 export const OrderPlacing = () => {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState<IFormData>({
+  const [formData, setFormData] = useState<IFormDataWithCheckboxes>({
     place: "",
     surname: "",
     name: "",
@@ -67,17 +67,14 @@ export const OrderPlacing = () => {
     birthdayDate: null,
     email: "",
     paymentMethod: "",
+    preparationRules: false,
+    personalDataProcessing: false,
+    serviceAgreement: false,
   });
 
   const [emailError, setEmailError] = useState<string>("");
   const [formErrors, setFormErrors] = useState<string>("");
   const [isFormValid, setIsFormValid] = useState(false);
-
-  const [checkedCheckboxes, setCheckedCheckboxes] = useState({
-    preparationRules: false,
-    personalDataProcessing: false,
-    serviceAgreement: false,
-  });
 
   useEffect(() => {
     const storedData = getItemFromStorage("formData");
@@ -93,15 +90,19 @@ export const OrderPlacing = () => {
     }
   }, []);
 
-  const handleInputChange = (
-     e: any      // React.ChangeEvent<{ name: string; value: any }> | SelectChangeEvent<string>
-  ) => {
+  useEffect(() => {
+    // Update storage whenever formData changes
+    setItemInStorage("formData", formData);
+  }, [formData]);
+
+  const handleInputChange = (e: any) => {
     const { name, value } = e.target;
 
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+    console.log("kl;mk")
   };
 
   const handleDatePickerChange = (date: any) => {
@@ -112,42 +113,28 @@ export const OrderPlacing = () => {
     }));
   };
 
-  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setFormData((prevData: any) => ({
+  const handleEmailChange = (e: any) => {
+    const email = e.target.value;
+    if (!emailRegex.test(email)) {
+      setEmailError("Невалідна адреса електронної пошти");
+    } else {
+      setEmailError("");
+    }
+
+    setFormData((prevData) => ({
       ...prevData,
-      paymentMethod: value,
+      email: email,
     }));
   };
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name } = e.target;
+    const checked = e.target.checked; // Отримати значення чекбоксу
 
-
-
-  const validateForm = () => {
-    const isFormValid = (
-      formData.surname &&
-      formData.name &&
-      formData.birthdayDate &&
-      formData.phone &&
-      formData.email &&
-      formData.place &&
-      formData.paymentMethod &&
-      checkedCheckboxes.preparationRules &&
-      checkedCheckboxes.personalDataProcessing &&
-      checkedCheckboxes.serviceAgreement &&
-      !emailError
-    );
-
-    setIsFormValid(!!isFormValid);
-  
-    if (!isFormValid) {
-      setFormErrors("Заповніть всі поля та відзначте всі обов'язкові чекбокси для переходу на наступну сторінку");
-      return false;
-    }
-    setFormErrors("")
-    return true;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: checked, // Встановити булеве значення для чекбокса
+    }));
   };
-  
-
   const onFormSubmit = () => {
     if (validateForm()) {
       const shoppingCart = getItemFromStorage("shoppingCart") || [];
@@ -165,31 +152,35 @@ export const OrderPlacing = () => {
     }
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setCheckedCheckboxes((prevChecked) => ({
-      ...prevChecked,
-      [name]: checked,
-    }));
-  };
-
-  const handleEmailChange = (e: any) => {
-    const email = e.target.value;
-    if (!emailRegex.test(email)) {
-      setEmailError("Невалідна адреса електронної пошти");
-    } else {
-      setEmailError("");
-    }
-  
-    setFormData((prevData) => ({
-      ...prevData,
-      email: email,
-    }));
-  };
   useEffect(() => {
     validateForm();
-  }, [formData, checkedCheckboxes]);
+  }, [formData, formData]);
 
+  const validateForm = () => {
+    const isFormValid = (
+      formData.surname &&
+      formData.name &&
+      formData.birthdayDate &&
+      formData.phone &&
+      formData.email &&
+      formData.place &&
+      formData.paymentMethod &&
+      formData.preparationRules &&
+      formData.personalDataProcessing &&
+      formData.serviceAgreement &&
+      !emailError
+    );
+
+    setIsFormValid(!!isFormValid);
+  
+    if (!isFormValid) {
+      setFormErrors("Заповніть всі поля та відзначте всі обов'язкові чекбокси для переходу на наступну сторінку");
+      return false;
+    }
+    setFormErrors("")
+    return true;
+  };
+  
   return (
     <div className={cl.Tab2}>
       <div className={cl.Tab2__Container}>
@@ -319,6 +310,7 @@ export const OrderPlacing = () => {
                       value={formData.birthdayDate}
                       onChange={handleDatePickerChange}
                       format={DATE_FORMAT}
+                      maxDate={dayjs(new Date())}
                     />
                   </LocalizationProvider>
                 </FormControl>
@@ -377,7 +369,7 @@ export const OrderPlacing = () => {
                     control={
                       <Checkbox
                         name="preparationRules"
-                        checked={checkedCheckboxes.preparationRules}
+                        checked={formData.preparationRules}
                         onChange={handleCheckboxChange}
                       />
                     }
@@ -387,7 +379,7 @@ export const OrderPlacing = () => {
                     control={
                       <Checkbox
                         name="personalDataProcessing"
-                        checked={checkedCheckboxes.personalDataProcessing}
+                        checked={formData.personalDataProcessing}
                         onChange={handleCheckboxChange}
                       />
                     }
@@ -397,7 +389,7 @@ export const OrderPlacing = () => {
                     control={
                       <Checkbox
                         name="serviceAgreement"
-                        checked={checkedCheckboxes.serviceAgreement}
+                        checked={formData.serviceAgreement}
                         onChange={handleCheckboxChange}
                       />
                     }
@@ -414,7 +406,7 @@ export const OrderPlacing = () => {
               <FormControl>
                 <RadioGroup
                   value={formData.paymentMethod}
-                  onChange={handleRadioChange}
+                  onChange={handleInputChange}
                 >
                   <FormControlLabel
                     value="На сайте"

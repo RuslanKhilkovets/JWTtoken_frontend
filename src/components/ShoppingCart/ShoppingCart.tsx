@@ -75,7 +75,7 @@ const ShoppingCart: React.FC<IShoppingCartProps> = ({ isOpen, onClose }) => {
         <div className="modal-content">
           {cartData.length !== 0 ? (
             <>
-            <div>
+            <div className='modal-table_container'>
             <TableContainer component={Paper} className='modal-table'>
                 <Table>
                   <TableHead>
@@ -101,16 +101,19 @@ const ShoppingCart: React.FC<IShoppingCartProps> = ({ isOpen, onClose }) => {
                     ))}
                   </TableBody>
                 </Table>
-              </TableContainer>
-              <div className="clear-cart" onClick={handleClearCart}>
-                <div className="clear-cart__icon"></div>
-                <p className="clear-cart__text">Очистить корзину</p>
-              </div>
-              <div className="total-count">
-                <p className="total-count__text">Итого: {totalPriceCount.toFixed(2)} $</p>
-              </div>
+            </TableContainer>
+
             </div>
               <div className="modal-buttons">
+                <div className="modal-btns">
+                  <div className="clear-cart" onClick={handleClearCart}>
+                    <div className="clear-cart__icon"></div>
+                    <p className="clear-cart__text">Очистить корзину</p>
+                  </div>
+                  <div className="total-count">
+                    <p className="total-count__text">Итого: {totalPriceCount.toFixed(2)} $</p>
+                </div>
+              </div>
                 <Button active onClick={() => onNavigate(1)}>
                   Добавить анализы
                 </Button>

@@ -70,7 +70,7 @@ export const DataConfirmation = () => {
                                 )
                             }
                         </div>
-                        <p className={cl.DataConfirmation__Total}>Разом: {total} $</p>
+                        <p className={cl.DataConfirmation__Total}>Разом: {total.toFixed(2)} $</p>
                     </div>
                 </Card>
             </div>
