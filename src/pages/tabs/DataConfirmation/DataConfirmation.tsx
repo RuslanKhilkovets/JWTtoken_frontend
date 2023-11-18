@@ -12,7 +12,7 @@ import { getItemFromStorage } from '../../../utils/localStorageItems';
 import renderInfoAnalyses from './renderInfoAnalyses';
 
 
-import ShoppingCartItemsCountContext from '../../../context/ShoppingCartItemsCountContext/ShoppingCartItemsCountContext';
+import ShoppingCartItemsCountContext from '../../../context/ShoppingCartItemsContext/ShoppingCartItemsContext';
 import { ITableRow } from '../../../types/ITableRow';
 
 
@@ -27,23 +27,22 @@ import cl from "./DataConfirmation.module.scss";
 
 export const DataConfirmation = () => {
     const navigate = useNavigate();
-    const { clearItemsCount } = React.useContext(ShoppingCartItemsCountContext)
+    const { clearItems } = React.useContext(ShoppingCartItemsCountContext)
 
 
 
-    const shoppingCartString = localStorage.getItem("shoppingCart");
 
     const formData = getItemFromStorage("formData")
-    const shoppingCart = shoppingCartString ? JSON.parse(shoppingCartString) : {};
+    const shoppingCart = getItemFromStorage("shoppingCart")
 
     const total = shoppingCart.reduce((acc: number, item: ITableRow) => acc + item.price, 0);
 
     const handleRedirectToCompletePage = () => {
         localStorage.removeItem("shoppingCart");
-        clearItemsCount();
+        clearItems();
         navigate("../../payload");
     };
-
+    
     return (
         <div className={cl.DataConfirmation}>
             <div className={cl.DataConfirmation__Container}>
@@ -64,7 +63,7 @@ export const DataConfirmation = () => {
                                         </div>
                                     ))
                                 ) 
-                                : 
+                                :
                                 (
                                     <p className={cl.DataConfirmation__NoItems}>Немає аналізів</p>
                                 )

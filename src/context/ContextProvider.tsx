@@ -1,6 +1,6 @@
 import { AuthContextProvider } from "./AuthContext/AuthContextProvider";
 import LoaderContextProvider from "./LoaderContext/LoaderContextProvider";
-import ShoppingCartItemsCountContextProvider from "./ShoppingCartItemsCountContext/ShoppingCartItemsCountContextProvider";
+import ShoppingCartItemsCountContextProvider from "./ShoppingCartItemsContext/ShoppingCartItemsContextProvider";
 
 import IContextProvider from "../types/IContextProvider";
 

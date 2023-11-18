@@ -1,15 +1,17 @@
-import axios from 'axios';
-import { IGetLoginData } from '../components/pages/LogIn/LogInPage';
 import axiosInstance from './api';
+
+
+import { IGetLoginData } from '../pages/LogIn/LogInPage';
+import ILoginResponse from '../types/ILoginResponse';
+
+
+
+
 
 const API_URL = 'http://localhost:5000/api/Authenticate'; 
 
-interface LoginResponse {
-  token: string;
-  refreshToken: string;
-}
 
-export const login = async (logInData: IGetLoginData): Promise<LoginResponse> => {
+export const login = async (logInData: IGetLoginData): Promise<ILoginResponse> => {
   try {
     const response = await axiosInstance.post(`${API_URL}/login`, logInData);
     return response.data;

@@ -1,6 +1,8 @@
 import axios from "axios";
 import { IGetRegisterData } from "../types/IGetRegisterData";
 
+
+
 export default async function registration(url: string, registerData: IGetRegisterData){
     const headers = {
         'Content-Type': 'application/json'

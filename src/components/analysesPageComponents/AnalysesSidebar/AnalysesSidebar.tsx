@@ -54,7 +54,7 @@ export const AnalysesSidebar: React.FC<IAnalysesSidebarProps> = (
             <div>
               <Accordion 
                 className={cl.AnalysesSidebar__Accordion} 
-                key={accordion.title} 
+                key={accordion.itemId + accordion.title} 
                 expanded={expandedPanels[accordion.title]} 
                 onChange={handleAccordionChange(accordion.title)}
               >

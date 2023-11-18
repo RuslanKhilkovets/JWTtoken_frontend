@@ -1,10 +1,14 @@
+import dayjs from "dayjs";
 import Card from "../../../components/Card/Card";
 import InfoAnalyses from "../../../components/UI/InfoAnalyses/InfoAnalyses";
+import { DATE_FORMAT } from "../../../globals/dateFormat";
 import IFormData from "../../../types/IFormData";
 
 export const renderInfoAnalyses = (data: IFormData) => {
-    const { place, paymentMethod, surname, name, patronymic, birthdayDate, phone, email } = data;
-  
+    let { place, paymentMethod, surname, name, patronymic, birthdayDate, phone, email } = data;
+    birthdayDate = dayjs(birthdayDate).format(DATE_FORMAT)
+
+    
     const infoItems = [
       { icon: "place", text: place, title: "Пункт сдачи" },
       { icon: "payment", text: paymentMethod, title: "Тип оплати" },

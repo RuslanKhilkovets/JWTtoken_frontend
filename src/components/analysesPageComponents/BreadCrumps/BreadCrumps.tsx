@@ -29,7 +29,7 @@ const BreadCrumbs: React.FC<IBreadCrumbsProps> = ({
   }, [breadcrumbLink, breadcrumbSubLink]);
 
   const arrayFromLinks = [breadcrumbLinkFromStorage, breadcrumbSubLinkFromStorage];
-
+  
   return (
     <div className={cl.BreadCrumbs}>
       <button className={cl.BreadCrumbs__Button} onClick={() => changeActiveSidebar()}></button>
@@ -40,7 +40,7 @@ const BreadCrumbs: React.FC<IBreadCrumbsProps> = ({
           >
             Всі аналізи
         </Link>
-        {arrayFromLinks.map((link, index) => (
+        { arrayFromLinks.length !== 1 && arrayFromLinks.map((link, index) => (
           <Link
             key={index}
             underline="hover"

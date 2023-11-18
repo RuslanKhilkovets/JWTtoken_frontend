@@ -1,4 +1,4 @@
-// Остаточна версія коду Tab2
+// Остаточна версія коду OrderPlacing
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -36,21 +36,23 @@ import { DATE_FORMAT } from "../../../globals/dateFormat";
 
 import Card from "../../../components/Card/Card";
 import Button from "../../../components/UI/Button/Button";
+import CustomSelect from "../../../components/UI/Select/Select";
+
 
 import { emailRegex } from "../../../regex/emailRegex";
 import { initialsRegex, initialsRegexString } from "../../../regex/initialsRegex";
 import { placeSelectData } from "../../../globals/selectData";
-import CustomSelect from "../../../components/UI/Select/Select";
 
-import cl from "./OrderPlacing.module.scss";
+
 import IFormDataWithCheckboxes from "../../../types/IFormDataWithCheckboxes";
 
+
+import cl from "./OrderPlacing.module.scss";
 
 
 
 dayjs.extend(customParseFormat);
 dayjs.locale('uk');
-
 
 
 
@@ -72,28 +74,13 @@ export const OrderPlacing = () => {
     serviceAgreement: false,
   });
 
+
   const [emailError, setEmailError] = useState<string>("");
   const [formErrors, setFormErrors] = useState<string>("");
-  const [isFormValid, setIsFormValid] = useState(false);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
+  const [isPhoneValid, setIsPhoneValid] = useState<boolean>(false);
 
-  useEffect(() => {
-    const storedData = getItemFromStorage("formData");
-    if (storedData) {
-      const birthdayDate = storedData.birthdayDate
-        ? dayjs(storedData.birthdayDate, DATE_FORMAT)
-        : null;
-      setFormData((prevData) => ({
-        ...prevData,
-        ...storedData,
-        birthdayDate,
-      }));
-    }
-  }, []);
 
-  useEffect(() => {
-    // Update storage whenever formData changes
-    setItemInStorage("formData", formData);
-  }, [formData]);
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
@@ -102,7 +89,6 @@ export const OrderPlacing = () => {
       ...prevData,
       [name]: value,
     }));
-    console.log("kl;mk")
   };
 
   const handleDatePickerChange = (date: any) => {
@@ -126,15 +112,28 @@ export const OrderPlacing = () => {
       email: email,
     }));
   };
+
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
-    const checked = e.target.checked; // Отримати значення чекбоксу
-
+    const checked = e.target.checked; 
+    console.log(checked)
     setFormData((prevData) => ({
       ...prevData,
-      [name]: checked, // Встановити булеве значення для чекбокса
+      [name]: checked, 
     }));
   };
+
+  const handlePhoneChange = (e: any) => {
+    const { value } = e.target;
+    const cleanedValue = value.replace(/\D/g, ''); 
+    setIsPhoneValid(String(cleanedValue).length === 12);
+  
+    setFormData((prevData) => ({
+      ...prevData,
+      phone: value,
+    }));
+  };
+
   const onFormSubmit = () => {
     if (validateForm()) {
       const shoppingCart = getItemFromStorage("shoppingCart") || [];
@@ -142,7 +141,7 @@ export const OrderPlacing = () => {
         setItemInStorage("formData", {
           ...formData,
           birthdayDate: formData.birthdayDate
-            ? dayjs(formData.birthdayDate, DATE_FORMAT).format(DATE_FORMAT)
+            ? dayjs(formData.birthdayDate).format(DATE_FORMAT)
             : null,
         });
         navigate("../tab3");
@@ -156,18 +155,38 @@ export const OrderPlacing = () => {
     validateForm();
   }, [formData, formData]);
 
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("formData")) || {};
+    if (storedData) {
+      const birthdayDate = storedData.birthdayDate
+        ? dayjs(storedData.birthdayDate)
+        : null;
+      setFormData((prevData) => ({
+        ...prevData,
+        ...storedData,
+        birthdayDate,
+      }));
+    }
+  }, []);
+
+
+  useEffect(() => {
+    setItemInStorage("formData", formData);
+  }, [formData]);
+
+
   const validateForm = () => {
     const isFormValid = (
       formData.surname &&
       formData.name &&
       formData.birthdayDate &&
       formData.phone &&
-      formData.email &&
       formData.place &&
       formData.paymentMethod &&
       formData.preparationRules &&
       formData.personalDataProcessing &&
       formData.serviceAgreement &&
+      isPhoneValid &&
       !emailError
     );
 
@@ -180,12 +199,12 @@ export const OrderPlacing = () => {
     setFormErrors("")
     return true;
   };
-  
+
   return (
-    <div className={cl.Tab2}>
-      <div className={cl.Tab2__Container}>
-        <div className={cl.Tab2__Items}>
-          <div className={cl.Tab2__Card}>
+    <div className={cl.OrderPlacing}>
+      <div className={cl.OrderPlacing__Container}>
+        <div className={cl.OrderPlacing__Items}>
+          <div className={cl.OrderPlacing__Card}>
             <Card title="Информация">
               <FormControl sx={{ width: "100%", margin: "20px 0" }}>
                 <InputLabel id="place">Пункт сдачи</InputLabel>
@@ -203,8 +222,8 @@ export const OrderPlacing = () => {
                   />
               </FormControl>
             </Card>
-            <Card title="Карточка клиента" className={cl.Tab2__Inputs}>
-              <div className={cl.Tab2__Items_Container}>
+            <Card title="Карточка клиента" className={cl.OrderPlacing__Inputs}>
+              <div className={cl.OrderPlacing__Items_Container}>
                 <TextField
                   name="surname"
                   label="Фамилия*"
@@ -277,7 +296,7 @@ export const OrderPlacing = () => {
                 />
 
               </div>
-              <div className={cl.Tab2__Items_Grid}>
+              <div className={cl.OrderPlacing__Items_Grid}>
                 <FormControl>
                   <InputLabel id="gender">Пол</InputLabel>
                   <Select
@@ -318,7 +337,7 @@ export const OrderPlacing = () => {
                   <InputMask
                     mask="+38 (099) 999-99-99"
                     value={formData.phone}
-                    onChange={handleInputChange}
+                    onChange={handlePhoneChange}
                   >
                     {(inputProps: any) => (
                       <TextField
@@ -341,29 +360,29 @@ export const OrderPlacing = () => {
                   </InputMask>
                 </FormControl>
                 <FormControl>
-                <TextField
-                  name="email"
-                  label="Email*"
-                  variant="outlined"
-                  value={formData.email}
-                  onChange={handleEmailChange}
-                  InputProps={{
-                    sx: {
-                      borderRadius: "20px",
-                    },
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Email />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
+                  <TextField
+                    name="email"
+                    label="Email*"
+                    variant="outlined"
+                    value={formData.email}
+                    onChange={handleEmailChange}
+                    InputProps={{
+                      sx: {
+                        borderRadius: "20px",
+                      },
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Email />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
                   {emailError && (
                     <div style={{ color: "red" }}>{emailError}</div>
                   )}
                 </FormControl>
               </div>
-              <div className={cl.Tab2__Checkboxes}>
+              <div className={cl.OrderPlacing__Checkboxes}>
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -400,13 +419,14 @@ export const OrderPlacing = () => {
             </Card>
           </div>
         </div>
-        <div className={cl.Tab2__Items}>
+        <div className={cl.OrderPlacing__Items}>
           <Card title="Оплата">
-            <div className={cl.Tab2__Checkboxes}>
+            <div className={cl.OrderPlacing__Checkboxes}>
               <FormControl>
                 <RadioGroup
                   value={formData.paymentMethod}
                   onChange={handleInputChange}
+                  name="paymentMethod"
                 >
                   <FormControlLabel
                     value="На сайте"
@@ -425,17 +445,17 @@ export const OrderPlacing = () => {
                   />
                 </RadioGroup>
               </FormControl>
-              <div className={cl.Tab2__Descriptions}>
-                <p className={cl.Tab2__Description}>
+              <div className={cl.OrderPlacing__Descriptions}>
+                <p className={cl.OrderPlacing__Description}>
                   ✓ Карты рассрочки для оплаты Заказов онлайн на сайте или в пунктах не принимаются;
                 </p>
-                <p className={cl.Tab2__Description}>
+                <p className={cl.OrderPlacing__Description}>
                   ✓ Скидка 5% не распространяется на услуги взятия и аутсорсинговые услуги, не суммируется с другими акционными и/или скидочными предложениями;
                 </p>
-                <p className={cl.Tab2__Description}>
+                <p className={cl.OrderPlacing__Description}>
                   ✓ Нажимая кнопку любого из способов оплаты, Вы подтверждаете правильность выбранных услуг;
                 </p>
-                <p className={cl.Tab2__Description}>
+                <p className={cl.OrderPlacing__Description}>
                   ✓ Оплата Заказов онлайн в пункте осуществляется по ценам, действующим на день оплаты.
                 </p>
               </div>
@@ -446,11 +466,11 @@ export const OrderPlacing = () => {
       {formErrors && (
         <div style={{ color: "red", margin: "20px 0" }}>{formErrors}</div>
       )}
-      <div className={cl.Tab2__ButtonContainer}>
+      <div className={cl.OrderPlacing__ButtonContainer}>
         <Button
           disabled={!isFormValid}
           active={isFormValid}
-          className={cl.Tab2__Button}
+          className={cl.OrderPlacing__Button}
           onClick={onFormSubmit}
         >
           Далее

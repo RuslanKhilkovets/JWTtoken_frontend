@@ -1,6 +1,7 @@
 .Analyses{
     margin: 0 auto;
     margin-bottom: 100px;
+    animation: open .3s ease-in;
     &__Container{
         display: flex;
         justify-content: center;
@@ -8,12 +9,10 @@
         gap: 32px;
     }
     &__Sidebar{
-        width: 240.62px;
+        width: 300px;
         border-radius: 20px;
     }
     &__Content{
-
-        padding: 32px;
         background-color: #fff;
         border-radius: 20px;
         margin-bottom: 20px;
@@ -62,6 +61,17 @@
         color: rgba(117, 138, 176, 1);
     }
 }
+@keyframes open {
+    0%{
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY();
+
+    }
+}
 @media (max-width: 1024px){
     .Analyses{
         &__Content{
@@ -79,6 +89,8 @@
         &__Content{
             width: 100%;
         }
-
+        &__Item{
+            padding: 1rem;  
+        }
     }
 }

@@ -1,8 +1,9 @@
-.Tab4{
+.PayloadPage{
     margin: 0 auto;
     width: min(1200px, 100%);
     padding: 20px;
     &__Container{
+        margin-top: 100px;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 32px;
@@ -10,7 +11,7 @@
     &__Image{
         width: 100%;
         height: 351px;
-        background: url("../../icons/Tab4-Image.png") no-repeat;
+        background: url("../../icons/PayloadPage-Image.png") no-repeat;
         background-size: contain;
     }
     &__Content{
@@ -40,7 +41,7 @@
 }
 
 @media (max-width: 768px){
-    .Tab4{
+    .PayloadPage{
         &__Container{
             grid-template-columns: 1fr;
         }

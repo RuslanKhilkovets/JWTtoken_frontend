@@ -8,8 +8,8 @@ export const setToken = (key: string, token: string) => {
     })
 };
 
-export const getToken = (key: string)=> {
-    return Cookie.get(key)
+export const getToken = (key: string) => {
+    return JSON.parse(Cookie.get(key))
 };
   
 export const removeToken = (key: string) => {

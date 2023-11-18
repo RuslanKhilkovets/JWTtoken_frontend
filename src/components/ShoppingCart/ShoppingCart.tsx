@@ -7,46 +7,66 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 
 import Button from '../UI/Button/Button';
 import IShoppingCartProps from '../../types/IShoppingCartProps';
+import IFormData from '../../types/IFormData';
 
-import './ShoppingCart.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { getItemFromStorage, setItemInStorage } from '../../utils/localStorageItems';
+import { ITableRow } from '../../types/ITableRow';
+import { clearShoppingCart, removeItemFromShoppingCart } from '../../store/shoppingCart/actions';
 
-import ShoppingCartItemsCountContext from '../../context/ShoppingCartItemsCountContext/ShoppingCartItemsCountContext';
+
+import "./ShoppingCart.scss"
 
 
 
 const ShoppingCart: React.FC<IShoppingCartProps> = ({ isOpen, onClose }) => {
 
-  const { getItemsCount, clearItemsCount} = React.useContext(ShoppingCartItemsCountContext)
+  const dispatch = useDispatch()
 
+  const items = useSelector((state: any) => state.shoppingCart.shoppingCartItems)
+  const [cartData, setCartData] = useState(items)
   const [totalPriceCount, setTotalPriceCount] = useState(0);
-  const [cartData, setCartData] = useState<any[]>([]); 
+  const [isMobileDevice, setIsMobileDevice] = React.useState<boolean>(false);
+  const [isBigTable, setIsBigTable] = React.useState(false)
 
-  const cartDataString = localStorage.getItem('shoppingCart');
+
 
   useEffect(() => {
-    const cartData = cartDataString ? JSON.parse(cartDataString) : [];
-    setCartData(cartData);
-    const total = cartData.reduce((acc, item: any) => {
+    const total = cartData.reduce((acc: number, item: any) => {
       return acc + item.price;
     }, 0);
     setTotalPriceCount(total);
-  }, [cartDataString]);
+    setCartData(items)
+  }, [items]);
+
+  
+  useEffect(() => {
+    const windowSize = window.innerWidth;
+    if(windowSize <= 768){
+        setIsMobileDevice(true);
+    } else {
+        setIsMobileDevice(false);
+    }
+  }, []);
+
+
 
   const navigate = useNavigate();
 
   const handleRemoveItem = (row: any) => {
     const updatedCartData = cartData.filter((item: any) => item.id !== row.id);
-    setCartData(updatedCartData);
-    localStorage.setItem('shoppingCart', JSON.stringify(updatedCartData));
-    setTotalPriceCount(updatedCartData.reduce((acc, item: any) => acc + item.price, 0));
-    getItemsCount();
+    setItemInStorage('shoppingCart', updatedCartData)
+    console.log(items)
+    dispatch(removeItemFromShoppingCart(row))
+    setCartData(() => updatedCartData)
+
+    setTotalPriceCount(updatedCartData.reduce((acc: number, item: ITableRow) => acc + item.price, 0));
   };
 
   const handleClearCart = () => {
-    setCartData([]);
-    clearItemsCount();
+    dispatch(clearShoppingCart())
     localStorage.removeItem('shoppingCart');
-
+    setCartData([])
   };
 
   const onNavigate = (tabNumber: number) => {
@@ -61,7 +81,7 @@ const ShoppingCart: React.FC<IShoppingCartProps> = ({ isOpen, onClose }) => {
   const handleClose = () => {
     onClose();
   };
-  
+
   return (
     <div className="modal-overlay">
       <div className="modal">
@@ -72,10 +92,49 @@ const ShoppingCart: React.FC<IShoppingCartProps> = ({ isOpen, onClose }) => {
           </div>
           <button className="close-button" onClick={handleClose}></button>
         </div>
+
         <div className="modal-content">
           {cartData.length !== 0 ? (
             <>
             <div className='modal-table_container'>
+            {
+              isMobileDevice && !isBigTable
+              ?
+              <>
+              <TableContainer component={Paper} className='modal-table'>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Перелік аналізів</TableCell>
+                      <TableCell>Ціна</TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {cartData.map((row: any) => (
+                      <TableRow key={row.description}>
+                        <TableCell component="th" scope="row">
+                          {row.description}
+                        </TableCell>
+                        <TableCell align="center">{row.price}</TableCell>
+                        <TableCell>
+                          <button className="delete-button" onClick={() => handleRemoveItem(row)}></button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+
+            </TableContainer>
+                            {
+                              (isMobileDevice && !isBigTable) 
+                              &&
+                              <button className="modal__see-more-button" onClick={() => setIsBigTable(true)}>
+                                <span className="modal__see-more-button__text">+</span> 
+                              </button>
+                            }
+                            </>
+            :
             <TableContainer component={Paper} className='modal-table'>
                 <Table>
                   <TableHead>
@@ -102,6 +161,7 @@ const ShoppingCart: React.FC<IShoppingCartProps> = ({ isOpen, onClose }) => {
                   </TableBody>
                 </Table>
             </TableContainer>
+            }
 
             </div>
               <div className="modal-buttons">
@@ -127,9 +187,6 @@ const ShoppingCart: React.FC<IShoppingCartProps> = ({ isOpen, onClose }) => {
               <div className="modal-buttons">
                 <Button active onClick={() => onNavigate(1)}>
                   Добавить анализы
-                </Button>
-                <Button active onClick={() => onNavigate(2)}>
-                  Оформить заказ
                 </Button>
               </div>
             </>

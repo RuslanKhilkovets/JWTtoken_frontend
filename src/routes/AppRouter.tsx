@@ -1,14 +1,19 @@
 import { Routes, Route } from "react-router-dom";
 import { privateRoutes, publicRoutes } from "./routes"
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AuthContext from "../context/AuthContext/AuthContext";
+import { addItemsToShoppingCart } from "../store/shoppingCart/actions";
+import { getItemFromStorage } from "../utils/localStorageItems";
 
 
 
 
 export const AppRouter: React.FC = () => {
     const { isAuth } = useContext(AuthContext);
-    
+    useEffect(() => {
+        addItemsToShoppingCart(getItemFromStorage("ShoppingCart"))
+    });
+
     return (
         <Routes>
             {

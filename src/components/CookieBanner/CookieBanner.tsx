@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react';
 
 import Cookies from 'js-cookie';
 
+import Button from '../UI/Button/Button';
+
 
 import cl from "./CookieBanner.module.scss"
-import Button from '../UI/Button/Button';
+
+
 
 const CookieBanner = () => {
 

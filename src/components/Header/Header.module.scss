@@ -5,11 +5,14 @@
     height: max-content;
     background-color: #aaa;
     width: 100%;
-    &__Link{
+    &__Logo_Link{
         color: #000000;
         text-decoration: none;
         font-size: 2rem;
         font-family: "Lato", sans-serif;
+    }
+    &__Link{
+       
     }   
     &__Container{
         display: flex;

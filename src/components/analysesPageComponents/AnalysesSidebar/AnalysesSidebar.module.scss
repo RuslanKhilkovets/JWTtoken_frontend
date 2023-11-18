@@ -1,5 +1,4 @@
 .Accordion{
-    display: block;
     &__Link{
         text-decoration: none;
         color: rgba(46, 59, 82, 1);
@@ -18,6 +17,10 @@
     }
 }
 .AnalysesSidebar{
+    padding: 10px;
+    &__Accordion{
+        border-radius: 20px;
+    }
     &__CloseButton{
         display: none;
         position: absolute;
@@ -35,7 +38,7 @@
         right: -20px;
     }
 }
-@media  (max-width: 1024px) {
+@media (max-width: 1024px) {
     .AnalysesSidebar{
         &__CloseButton{
             display: block;

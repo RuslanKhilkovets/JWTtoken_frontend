@@ -1,6 +1,8 @@
 .AnalysesTable{
+    margin-top: 2rem;
     font-family: "Lato", sans-serif;
     margin-bottom: 30px;
+    position: relative;
 }
 
 .AnalysesTable__Header{
@@ -29,4 +31,30 @@
 
 .AnalysesTable__Button{
     transform: translateY(100%);
+}
+
+.AnalysesTable__SeeMoreButton{
+    cursor: pointer;
+    position: absolute;
+    top: -30px;
+    right: -10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(0, 83, 159, 1);
+
+
+}
+.AnalysesTable__SeeMoreButton_Text{
+    color: #f4f6f9;
+    font-size: 2rem;
+    
+}
+.AnalysesTable__PrintBtn{
+    background: url("../../../icons/PDF-icon.svg") no-repeat;
+    background-size: contain;
+    width: 30px;
+    height: 30px;
+    border: 'none';
+    cursor: pointer;
 }

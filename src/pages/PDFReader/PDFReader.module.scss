@@ -1,0 +1,14 @@
+.Pdf_Viewer{
+    padding-top: 100px;
+    margin: 0 auto;
+    width: 50%;
+}
+.Pdf_Viewer > * {
+    transition: 0;
+}
+
+@media screen and (max-width: 768px) {
+    .Pdf_Viewer{
+        width: 100%;
+    }
+}
