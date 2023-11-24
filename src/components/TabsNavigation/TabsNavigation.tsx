@@ -3,12 +3,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 
 import { getItemFromStorage } from '../../utils/localStorageItems';
-import tabTitles from '../../globals/tabTitlesData';
 
 import { useSelector } from 'react-redux';
 
 
 import './TabsNavigation.scss';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -16,7 +16,7 @@ import './TabsNavigation.scss';
 export const TabsNavigation: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const { t } = useTranslation();
 
   const items  = useSelector((state: any) => state.shoppingCart.shoppingCartItems);  
   const scrollItemRef = useRef(null);
@@ -134,7 +134,7 @@ export const TabsNavigation: React.FC = () => {
             >
               <p className="tabs-menu__number--text">{tabNumber}</p>
             </div>
-            <p className="tabs-menu__title">{tabTitles[tabNumber - 1]}</p>
+            <p className="tabs-menu__title">{t(`tabNavigation.tab${tabNumber}`)}</p>
           </li>
         ))}
       </ul>

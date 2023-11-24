@@ -15,12 +15,9 @@ import AnalysesSelection from '../pages/tabs/AnalysesSelection/AnalysesSelection
 import OrderPlacing from '../pages/tabs/OrderPlacing/OrderPlacing';
 import DataConfirmation from '../pages/tabs/DataConfirmation/DataConfirmation';
 import PDFPage from '../pages/PDFReader/PDFReader';
+import ChatPage from '../pages/Chat/ChatPage';
+import IRoutes from '../types/IRoutes';
 
-export interface IRoutes {
-    path: string;
-    component: React.FC;
-    children?: IRoutes[];
-}
 
 export const publicRoutes: IRoutes[] = [
     { path: "/", component: HomePage },
@@ -33,6 +30,7 @@ export const privateRoutes: IRoutes[] = [
     { path: "/*",component: MainPage},
     { path: "/payload",component: PayloadPage},
     { path: "/CKeditor",component: Editor},
+    { path: "/chat",component: ChatPage},
     { path: "/pdfReader/:data",component: PDFPage},
 ];
 

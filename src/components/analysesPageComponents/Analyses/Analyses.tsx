@@ -8,10 +8,14 @@ import BreadCrumbs from '../BreadCrumps/BreadCrumps';
 import AnalysesTable from '../AnalysesTable/AnalysesTable';
 
 import cl from "./Analyses.module.scss";
+import { useTranslation } from 'react-i18next';
 
 
 
 export const Analyses: React.FC = () => {
+  const { t } = useTranslation()
+
+
   const [breadcrumbLink, setBreadcrumbLink] = React.useState<string>("");
   const [breadcrumbSubLink, setBreadcrumbSubLink] = React.useState<string>("");
   const [searchParam, setSearchParam] = React.useState("");
@@ -47,13 +51,13 @@ export const Analyses: React.FC = () => {
               active={activeTab === "doctorData"}
               onClick={() => handleTabsChange("doctorData")}
             >
-              Для лікарів
+              {t('forDoctorsTitle')}
             </Button>
             <Button
               active={activeTab === "clientData"}
               onClick={() => handleTabsChange("clientData")}
             >
-              Для клієнтів
+              {t('forClientsTitle')}
             </Button>
           </div>
           <BreadCrumbs

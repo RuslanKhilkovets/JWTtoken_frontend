@@ -48,6 +48,7 @@ import IFormDataWithCheckboxes from "../../../types/IFormDataWithCheckboxes";
 
 
 import cl from "./OrderPlacing.module.scss";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -58,6 +59,8 @@ dayjs.locale('uk');
 
 export const OrderPlacing = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
 
   const [formData, setFormData] = useState<IFormDataWithCheckboxes>({
     place: "",
@@ -78,7 +81,7 @@ export const OrderPlacing = () => {
   const [emailError, setEmailError] = useState<string>("");
   const [formErrors, setFormErrors] = useState<string>("");
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
-  const [isPhoneValid, setIsPhoneValid] = useState<boolean>(false);
+  const [isPhoneValid, setIsPhoneValid] = useState<boolean>(true);
 
 
 
@@ -138,12 +141,7 @@ export const OrderPlacing = () => {
     if (validateForm()) {
       const shoppingCart = getItemFromStorage("shoppingCart") || [];
       if (shoppingCart.length > 0) {
-        setItemInStorage("formData", {
-          ...formData,
-          birthdayDate: formData.birthdayDate
-            ? dayjs(formData.birthdayDate).format(DATE_FORMAT)
-            : null,
-        });
+
         navigate("../tab3");
       } else {
         setFormErrors("Додайте щось до корзини перед оформленням замовлення");
@@ -205,40 +203,45 @@ export const OrderPlacing = () => {
       <div className={cl.OrderPlacing__Container}>
         <div className={cl.OrderPlacing__Items}>
           <div className={cl.OrderPlacing__Card}>
-            <Card title="Информация">
+            <Card title={t("orderPlacingPage.information")}>
               <FormControl sx={{ width: "100%", margin: "20px 0" }}>
-                <InputLabel id="place">Пункт сдачи</InputLabel>
-                  <CustomSelect
-                    labelId="place"
-                    id="place"
-                    name="place"
-                    value={formData.place}
-                    label="Пункт сдачи"
-                    onChange={handleInputChange}
-                    options={placeSelectData}
-                    sx={{
-                      borderRadius: "25px",
-                    }}
-                  />
+                <InputLabel id="place">{t("orderPlacingPage.place")}</InputLabel>
+                <CustomSelect
+                  labelId="place"
+                  id="place"
+                  name="place"
+                  value={formData.place}
+                  label={t("orderPlacingPage.place")}
+                  onChange={handleInputChange}
+                  options={placeSelectData}
+                  sx={{
+                    borderRadius: "25px",
+                  }}
+                />
               </FormControl>
             </Card>
-            <Card title="Карточка клиента" className={cl.OrderPlacing__Inputs}>
+            <Card
+              title={t("orderPlacingPage.clientCard")}
+              className={cl.OrderPlacing__Inputs}
+            >
               <div className={cl.OrderPlacing__Items_Container}>
                 <TextField
                   name="surname"
-                  label="Фамилия*"
+                  label={t("orderPlacingPage.surname")}
                   variant="outlined"
                   value={formData.surname}
                   onChange={handleInputChange}
                   inputProps={{
-                    pattern: initialsRegexString, 
-                    title: "Прізвище повинне містити лише букви",
+                    pattern: initialsRegexString,
+                    title: t("orderPlacingPage.surnamePattern"),
                     onInput: (e: any) => {
                       e.preventDefault();
                       const inputValue = e.target.value;
                       const sanitizedInput = inputValue.replace(initialsRegex, "");
                       e.target.value = sanitizedInput;
-                      handleInputChange({ target: { name: "surname", value: sanitizedInput } });
+                      handleInputChange({
+                        target: { name: "surname", value: sanitizedInput },
+                      });
                     },
                   }}
                   InputProps={{
@@ -246,23 +249,24 @@ export const OrderPlacing = () => {
                       borderRadius: "20px",
                     },
                   }}
-
                 />
                 <TextField
                   name="name"
-                  label="Имя*"
+                  label={t("orderPlacingPage.name")}
                   variant="outlined"
                   value={formData.name}
                   onChange={handleInputChange}
                   inputProps={{
                     pattern: initialsRegexString,
-                    title: 'Имя должно содержать только буквы',
+                    title: t("orderPlacingPage.namePattern"),
                     onInput: (e: any) => {
                       e.preventDefault();
                       const inputValue = e.target.value;
                       const sanitizedInput = inputValue.replace(initialsRegex, "");
                       e.target.value = sanitizedInput;
-                      handleInputChange({ target: { name: "name", value: sanitizedInput } });
+                      handleInputChange({
+                        target: { name: "name", value: sanitizedInput },
+                      });
                     },
                   }}
                   InputProps={{
@@ -273,19 +277,21 @@ export const OrderPlacing = () => {
                 />
                 <TextField
                   name="patronymic"
-                  label="Отчество"
+                  label={t("orderPlacingPage.patronymic")}
                   variant="outlined"
                   value={formData.patronymic}
                   onChange={handleInputChange}
                   inputProps={{
                     pattern: initialsRegexString,
-                    title: 'Отчество должно содержать только буквы',
+                    title: t("orderPlacingPage.patronymicPattern"),
                     onInput: (e: any) => {
                       e.preventDefault();
                       const inputValue = e.target.value;
                       const sanitizedInput = inputValue.replace(initialsRegex, "");
                       e.target.value = sanitizedInput;
-                      handleInputChange({ target: { name: "patronymic", value: sanitizedInput } });
+                      handleInputChange({
+                        target: { name: "patronymic", value: sanitizedInput },
+                      });
                     },
                   }}
                   InputProps={{
@@ -294,27 +300,28 @@ export const OrderPlacing = () => {
                     },
                   }}
                 />
-
               </div>
               <div className={cl.OrderPlacing__Items_Grid}>
                 <FormControl>
-                  <InputLabel id="gender">Пол</InputLabel>
+                  <InputLabel id="gender">
+                    {t("orderPlacingPage.gender")}
+                  </InputLabel>
                   <Select
                     labelId="gender"
                     id="gender"
                     name="gender"
                     value={formData.gender}
-                    label="Пол"
+                    label={t("orderPlacingPage.gender")}
                     onChange={handleInputChange}
                     sx={{
                       borderRadius: "25px",
                     }}
                   >
                     <MenuItem value={"Мужской"}>
-                      <MaleIcon /> Мужской
+                      <MaleIcon /> {t("orderPlacingPage.genderMan")}
                     </MenuItem>
                     <MenuItem value={"Женский"}>
-                      <FemaleIcon /> Женский
+                      <FemaleIcon /> {t("orderPlacingPage.genderWoman")}
                     </MenuItem>
                   </Select>
                 </FormControl>
@@ -322,10 +329,13 @@ export const OrderPlacing = () => {
                   <LocalizationProvider
                     dateAdapter={AdapterDayjs}
                     adapterLocale={String(uk)}
-                    localeText={ukUA.components.MuiLocalizationProvider.defaultProps.localeText}
+                    localeText={
+                      ukUA.components.MuiLocalizationProvider.defaultProps
+                        .localeText
+                    }
                   >
                     <DatePicker
-                      label="Дата рождения*"
+                      label={t("orderPlacingPage.birthdayDate")}
                       value={formData.birthdayDate}
                       onChange={handleDatePickerChange}
                       format={DATE_FORMAT}
@@ -342,7 +352,7 @@ export const OrderPlacing = () => {
                     {(inputProps: any) => (
                       <TextField
                         name="phone"
-                        label="Телефон*"
+                        label={t("orderPlacingPage.phone")}
                         variant="outlined"
                         InputProps={{
                           ...inputProps,
@@ -362,7 +372,7 @@ export const OrderPlacing = () => {
                 <FormControl>
                   <TextField
                     name="email"
-                    label="Email*"
+                    label={t("orderPlacingPage.email")}
                     variant="outlined"
                     value={formData.email}
                     onChange={handleEmailChange}
@@ -392,7 +402,7 @@ export const OrderPlacing = () => {
                         onChange={handleCheckboxChange}
                       />
                     }
-                    label="С правилами подготовки к исследованию ознакомлен. Несоблюдение правил подготовки может влиять на корректность результата"
+                    label={t("orderPlacingPage.preparationRules")}
                   />
                   <FormControlLabel
                     control={
@@ -402,7 +412,7 @@ export const OrderPlacing = () => {
                         onChange={handleCheckboxChange}
                       />
                     }
-                    label="Я даю согласие на обработку персональных данных"
+                    label={t("orderPlacingPage.personalDataProcessing")}
                   />
                   <FormControlLabel
                     control={
@@ -412,7 +422,7 @@ export const OrderPlacing = () => {
                         onChange={handleCheckboxChange}
                       />
                     }
-                    label="Я согласен с условиями Публичного договора о возмездном оказании медицинских услуг"
+                    label={t("orderPlacingPage.serviceAgreement")}
                   />
                 </FormGroup>
               </div>
@@ -420,7 +430,7 @@ export const OrderPlacing = () => {
           </div>
         </div>
         <div className={cl.OrderPlacing__Items}>
-          <Card title="Оплата">
+          <Card title={t("orderPlacingPage.payment")}>
             <div className={cl.OrderPlacing__Checkboxes}>
               <FormControl>
                 <RadioGroup
@@ -431,32 +441,32 @@ export const OrderPlacing = () => {
                   <FormControlLabel
                     value="На сайте"
                     control={<Radio />}
-                    label="Оплатить на сайте"
+                    label={t("orderPlacingPage.payOnline")}
                   />
                   <FormControlLabel
                     value="ЕРИП"
                     control={<Radio />}
-                    label="Оплатить в ЕРИП"
+                    label={t("orderPlacingPage.payInERIP")}
                   />
                   <FormControlLabel
                     value="На місці"
                     control={<Radio />}
-                    label="Оплатить в пункте"
+                    label={t("orderPlacingPage.payInPerson")}
                   />
                 </RadioGroup>
               </FormControl>
               <div className={cl.OrderPlacing__Descriptions}>
                 <p className={cl.OrderPlacing__Description}>
-                  ✓ Карты рассрочки для оплаты Заказов онлайн на сайте или в пунктах не принимаются;
+                  {t("orderPlacingPage.payOnlineDescription1")}
                 </p>
                 <p className={cl.OrderPlacing__Description}>
-                  ✓ Скидка 5% не распространяется на услуги взятия и аутсорсинговые услуги, не суммируется с другими акционными и/или скидочными предложениями;
+                  {t("orderPlacingPage.payOnlineDescription2")}
                 </p>
                 <p className={cl.OrderPlacing__Description}>
-                  ✓ Нажимая кнопку любого из способов оплаты, Вы подтверждаете правильность выбранных услуг;
+                  {t("orderPlacingPage.payOnlineDescription3")}
                 </p>
                 <p className={cl.OrderPlacing__Description}>
-                  ✓ Оплата Заказов онлайн в пункте осуществляется по ценам, действующим на день оплаты.
+                  {t("orderPlacingPage.payOnlineDescription4")}
                 </p>
               </div>
             </div>
@@ -473,10 +483,11 @@ export const OrderPlacing = () => {
           className={cl.OrderPlacing__Button}
           onClick={onFormSubmit}
         >
-          Далее
+          {t("orderPlacingPage.next")}
         </Button>
       </div>
     </div>
   );
+  
 };
 export default OrderPlacing;

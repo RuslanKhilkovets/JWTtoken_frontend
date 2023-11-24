@@ -17,6 +17,7 @@ import { ITableRow } from '../../../types/ITableRow';
 
 
 import cl from "./DataConfirmation.module.scss";
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -27,6 +28,10 @@ import cl from "./DataConfirmation.module.scss";
 
 export const DataConfirmation = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
+
+
     const { clearItems } = React.useContext(ShoppingCartItemsCountContext)
 
 
@@ -49,7 +54,7 @@ export const DataConfirmation = () => {
 
                 {renderInfoAnalyses(formData)}
 
-                <Card title="Перечень анализов">
+                <Card title={t("dataConfirmation.analysesList")}>
                     <div className={cl.DataConfirmation__Analysis_List}>
                         <div className={cl.DataConfirmation__Analyses}>
                             {
@@ -75,7 +80,7 @@ export const DataConfirmation = () => {
             </div>
             <div className={cl.DataConfirmation__ButtonContainer}>
                 <Button active className={cl.DataConfirmation__Button} onClick={handleRedirectToCompletePage}>
-                    Подтвердить заказ
+                    {t("dataConfirmation.confirmOrder")}
                 </Button>
             </div>
         </div>

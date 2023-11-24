@@ -2,8 +2,10 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+import { useTranslation } from 'react-i18next';
 
-import { Button } from '@mui/material';
+
+import { Button, IconButton } from '@mui/material';
 
 
 import AuthContext from '../../context/AuthContext/AuthContext';
@@ -17,6 +19,9 @@ import cl from './Header.module.scss';
 
 
 export const Header: React.FC = () => {
+
+  const { i18n, t } = useTranslation()
+
   const navigate = useNavigate();
 
   const { changeIsAuth } = useContext(AuthContext);
@@ -50,6 +55,13 @@ export const Header: React.FC = () => {
     setShoppingItemsCount(items.length)
   }, [items])
 
+  // useEffect(() => {
+  //   const lang = navigator.language;
+  //   i18n.changeLanguage(lang)
+  // }, [])
+
+
+
 
   return (
     <header className={cl.Header}>
@@ -58,11 +70,28 @@ export const Header: React.FC = () => {
             Synevo
         </Link>
         <div className={cl.Header__UI}>
+            <IconButton 
+              onClick={() => i18n.changeLanguage('en')} 
+              size="sm" 
+              variant={i18n.language ==='en' ? 'solid' : 'soft'}
+            >
+                EN
+            </IconButton>
+            <IconButton 
+              onClick={() => i18n.changeLanguage('uk')} 
+              size="sm" 
+              variant={i18n.language ==='uk' ? 'solid' : 'soft'}
+            >
+                UA
+            </IconButton>          
+            <Link to={"../chat"} className={cl.Header__Link}>
+              Chat
+            </Link>
           <Link to={"../CKeditor"} className={cl.Header__Link}>
               CKeditor
           </Link>
           <button data-text={shoppingItemsCount} className={cl.Header__AddBtn} onClick={openModal}></button>
-         
+
           <Button variant="contained" color="success" onClick={handleLogOut}>
             Log Out
           </Button>

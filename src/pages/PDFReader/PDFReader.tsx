@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 
 
@@ -12,9 +11,12 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
 import cl from './PDFReader.module.scss';
 
+
+
 function PDFPage() {
   const { data } = useParams<{ data: string }>();
 
+  
   if (!data) {
     return <div>Error: PDF data not provided</div>;
   }

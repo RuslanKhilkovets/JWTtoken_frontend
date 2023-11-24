@@ -1,0 +1,11 @@
+.Chat{
+    &__LeaveRoom{
+        display: flex;
+        justify-content: flex-end;
+    }
+    &__Messages{
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+}

@@ -1,144 +1,142 @@
 export const accordionData = [
-    {
-      itemId: 1,
-      title: 'АНАЛІЗИ КРОВІ',
-      subItems: [
-        {
-          subItemId: 1,
-          title: 'Загальні аналізи крові'
-        },
-        {
-          subItemId: 2,
-          title: 'Аналізи крові із артерії'
-        }
-      ]
-    },
-    {
-      itemId: 2,
-      title: 'АНАЛІЗИ МОЗКУ',
-      subItems: [
-        {
-          subItemId: 1,
-          title: 'Аналізи сірої речовини'
-        },
-        {
-          subItemId: 2,
-          title: 'Аналізи білої речовини'
-        }
-      ]
-    },
-    {
-      itemId: 3,
-      title: 'ПСИХОЛОГІЧНІ АНАЛІЗИ',
-      subItems: [
-        {
-          subItemId: 1,
-          title: 'Аналізи ментального стану'
-        },
-        {
-          subItemId: 2,
-          title: 'Ще якісь аналізи'
-        }
-      ]
-    },
-    {
-      itemId: 4,
-      title: 'АНАЛІЗИ СЕРЦЯ',
-      subItems: [
-        {
-          subItemId: 1,
-          title: 'Аналізи функції серця'
-        },
-        {
-          subItemId: 2,
-          title: 'Аналізи міокарда'
-        }
-      ]
-    },
-    {
-      itemId: 5,
-      title: 'АНАЛІЗИ ШЛУНКА',
-      subItems: [
-        {
-          subItemId: 1,
-          title: 'Аналізи шлункового соку'
-        },
-        {
-          subItemId: 2,
-          title: 'Аналізи слизової оболонки'
-        }
-      ]
-    },
-    {
-      itemId: 6,
-      title: 'АНАЛІЗИ СЕЧІ',
-      subItems: [
-        {
-          subItemId: 1,
-          title: 'Загальні аналізи сечі'
-        },
-        {
-          subItemId: 2,
-          title: 'Аналізи сечового міхура'
-        }
-      ]
-    },
-    {
-      itemId: 7,
-      title: 'АНАЛІЗИ ОЧЕЙ',
-      subItems: [
-        {
-          subItemId: 1,
-          title: 'Аналізи зіниць'
-        },
-        {
-          subItemId: 2,
-          title: 'Аналізи сітківки'
-        }
-      ]
-    },
-    {
-      itemId: 8,
-      title: 'АНАЛІЗИ ВУХ',
-      subItems: [
-        {
-          subItemId: 1,
-          title: 'Аналізи слуху'
-        },
-        {
-          subItemId: 2,
-          title: 'Аналізи внутрішнього вуха'
-        }
-      ]
-    },
-    {
-      itemId: 9,
-      title: 'АНАЛІЗИ НІСТІЙКОВОГО ВІДДІЛУ',
-      subItems: [
-        {
-          subItemId: 1,
-          title: 'Аналізи нісних ходів'
-        },
-        {
-          subItemId: 2,
-          title: 'Аналізи слизової оболонки носа'
-        }
-      ]
-    },
-    {
-      itemId: 10,
-      title: 'АНАЛІЗИ ГОРЛА',
-      subItems: [
-        {
-          subItemId: 1,
-          title: 'Аналізи глотки'
-        },
-        {
-          subItemId: 2,
-          title: 'Аналізи слизової оболонки горла'
-        }
-      ]
-    },
+  {
+    itemId: 1,
+    title: 'bloodAnalyses',
+    subItems: [
+      {
+        subItemId: 1,
+        title: 'generalBloodTests'
+      },
+      {
+        subItemId: 2,
+        title: 'arterialBloodTests'
+      }
+    ]
+  },
+  {
+    itemId: 2,
+    title: 'brainAnalyses',
+    subItems: [
+      {
+        subItemId: 1,
+        title: 'grayMatterAnalysis'
+      },
+      {
+        subItemId: 2,
+        title: 'whiteMatterAnalysis'
+      }
+    ]
+  },
+  {
+    itemId: 3,
+    title: 'psychologicalAnalyses',
+    subItems: [
+      {
+        subItemId: 1,
+        title: 'mentalStateAnalysis'
+      },
+      {
+        subItemId: 2,
+        title: 'someOtherAnalysis'
+      }
+    ]
+  },
+  {
+    itemId: 4,
+    title: 'heartAnalyses',
+    subItems: [
+      {
+        subItemId: 1,
+        title: 'heartFunctionAnalysis'
+      },
+      {
+        subItemId: 2,
+        title: 'myocardiumAnalysis'
+      }
+    ]
+  },
+  {
+    itemId: 5,
+    title: 'stomachAnalyses',
+    subItems: [
+      {
+        subItemId: 1,
+        title: 'gastricJuiceAnalysis'
+      },
+      {
+        subItemId: 2,
+        title: 'mucousMembraneAnalysis'
+      }
+    ]
+  },
+  {
+    itemId: 6,
+    title: 'urineAnalyses',
+    subItems: [
+      {
+        subItemId: 1,
+        title: 'generalUrineAnalysis'
+      },
+      {
+        subItemId: 2,
+        title: 'bladderAnalysis'
+      }
+    ]
+  },
+  {
+    itemId: 7,
+    title: 'eyeAnalyses',
+    subItems: [
+      {
+        subItemId: 1,
+        title: 'pupilAnalysis'
+      },
+      {
+        subItemId: 2,
+        title: 'retinaAnalysis'
+      }
+    ]
+  },
+  {
+    itemId: 8,
+    title: 'earAnalyses',
+    subItems: [
+      {
+        subItemId: 1,
+        title: 'hearingAnalysis'
+      },
+      {
+        subItemId: 2,
+        title: 'innerEarAnalysis'
+      }
+    ]
+  },
+  {
+    itemId: 9,
+    title: 'nasalAnalyses',
+    subItems: [
+      {
+        subItemId: 1,
+        title: 'nasalPassageAnalysis'
+      },
+      {
+        subItemId: 2,
+        title: 'nasalMucosaAnalysis'
+      }
+    ]
+  },
+  {
+    itemId: 10,
+    title: 'throatAnalyses',
+    subItems: [
+      {
+        subItemId: 1,
+        title: 'throatAnalysis'
+      },
+      {
+        subItemId: 2,
+        title: 'throatMucosaAnalysis'
+      }
+    ]
+  },
 ];
-
-export default accordionData;

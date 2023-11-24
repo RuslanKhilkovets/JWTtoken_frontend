@@ -20,6 +20,7 @@ import generatePDFDataUrl from '../../../utils/generatePDFDataUrl ';
 
 
 import cl from './AnalysesTable.module.scss';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -27,14 +28,19 @@ import cl from './AnalysesTable.module.scss';
 const AnalysesTable = ({ searchParam, tabData }: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+
 
   const items = useSelector((state: any) => state.shoppingCart.shoppingCartItems);
   const { hideLoader, showLoader } = useContext(LoaderContext);
 
   const [filteredRows, setFilteredRows] = useState<ITableRow[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isMobileDevice, setIsMobileDevice] = React.useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
+
+
 
   const itemsPerPage = 5;
 
@@ -91,14 +97,11 @@ const AnalysesTable = ({ searchParam, tabData }: any) => {
     navigate(`/pdfReader/${encodeURIComponent(pdfDataUrl)}`)
   };
 
-  useEffect(() => {
-    const windowSize = window.innerWidth;
-    setIsMobileDevice(windowSize <= 768);
-  }, []);
 
   useEffect(() => {
     fetchAndSetData(tabData);
   }, [tabData]);
+
 
   const renderTableRow = (row: ITableRow) => (
     <TableRow key={row.id}>
@@ -136,32 +139,31 @@ const AnalysesTable = ({ searchParam, tabData }: any) => {
         </>
       ) : (
         <>
-          {filteredRows && filteredRows.length > 0 ? (
-            <TableContainer className={cl.AnalysesTable__Table} component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow className={cl.AnalysesTable__Header}>
-                    <TableCell>Перелік аналізів</TableCell>
-                    <TableCell align="center">Ціна</TableCell>
-                    <Hidden mdDown>
-                      <TableCell align="center">Термін виконання</TableCell>
-                      <TableCell align="center">Друкувати</TableCell>
-                    </Hidden>
-
-                    <TableCell align="center">Додати</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>{filteredRows.slice(0, currentPage * itemsPerPage).map(renderTableRow)}</TableBody>
-              </Table>
-            </TableContainer>
-          ) : (
-            <Loader />
-          )}
+            {filteredRows && filteredRows.length > 0 ? (
+              <TableContainer className={cl.AnalysesTable__Table} component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow className={cl.AnalysesTable__Header}>
+                      <TableCell>{t('listOfAnalyses')}</TableCell>
+                      <TableCell align="center">{t('price')}</TableCell>
+                      <Hidden mdDown>
+                        <TableCell align="center">{t('executionTerm')}</TableCell>
+                        <TableCell align="center">{t('print')}</TableCell>
+                      </Hidden>
+                      <TableCell align="center">{t('add')}</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>{filteredRows.slice(0, currentPage * itemsPerPage).map(renderTableRow)}</TableBody>
+                </Table>
+              </TableContainer>
+            ) : (
+              <Loader />
+            )}
 
           {filteredRows.length > currentPage * itemsPerPage && (
             <div className={cl.AnalysesTable__ButtonContainer}>
               <Button active={true} onClick={loadMoreItems} className={cl.AnalysesTable__Button}>
-                Завантажити ще
+                {t("loadMore")}
               </Button>
             </div>
           )}

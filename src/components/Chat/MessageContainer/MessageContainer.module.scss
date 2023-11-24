@@ -1,0 +1,31 @@
+.Message{
+    overflow-y: scroll;
+    height: 500px;
+    &__Message{
+        width: 300px;
+        padding: 10px;
+        border-radius: 10px;
+        margin: 10px 0;
+        background-color: #a6a6a6;
+        animation: messageView 1s ease;
+        transition: .5s;
+    }
+    &__MessageUserName{
+        font-size: 1.2rem;
+        font-family: Arial, Helvetica, sans-serif;
+        color: rgb(14, 50, 160)
+    }
+    &__MessageText{
+        font-size: 1rem;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+}
+
+@keyframes messageView {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}

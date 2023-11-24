@@ -16,12 +16,13 @@ import CustomSelect from '../../UI/Select/Select';
 import { citiesSelectData, genderSelectData } from '../../../globals/selectData';
 
 import cl from "./AnalysesForm.module.scss";
+import { useTranslation } from 'react-i18next';
 
 
 
 
 export const AnalysesForm = ({setSearchParam}: any) => {
-
+    const { t } = useTranslation();
 
     const [formData, setFormData] = React.useState<IGetFormData>({
         city: "",
@@ -47,7 +48,7 @@ export const AnalysesForm = ({setSearchParam}: any) => {
         <div className={cl.AnalysesForm__Container}>
             <div className={cl.AnalysesForm__Group}>
                 <FormControl sx={{width: "100%"}}>
-                    <InputLabel id="city">Місто</InputLabel>
+                    <InputLabel id="city">{t("cityTitle")}</InputLabel>
                     <CustomSelect
                         labelId="city"
                         id="city"
@@ -55,7 +56,7 @@ export const AnalysesForm = ({setSearchParam}: any) => {
                         value={formData.city}
                         label="Місто"
                         onChange={handleInputChange}
-                        options={citiesSelectData}
+                        options={citiesSelectData.map(city => ({ value: city.value, name: t(city.name) }))}
                         sx={{
                             borderRadius: '25px', 
                         }}
@@ -64,7 +65,7 @@ export const AnalysesForm = ({setSearchParam}: any) => {
                     
                 </FormControl>
                 <FormControl sx={{width: "100%"}}>
-                    <InputLabel id="gender">Стать</InputLabel>
+                    <InputLabel id="gender">{t("genderTitle")}</InputLabel>
                     <Select
                         labelId="gender"
                         id="gender"
@@ -77,14 +78,14 @@ export const AnalysesForm = ({setSearchParam}: any) => {
                             borderRadius: '25px',
                         }}
                     >
-                        <MenuItem value={"Чоловіча"}>Чоловіча</MenuItem>
-                        <MenuItem value={"Жіноча"}>Жіноча</MenuItem>
+                        <MenuItem value={"Чоловіча"}>{t("genderMan")}</MenuItem>
+                        <MenuItem value={"Жіноча"}>{t("genderWomen")}</MenuItem>
                     </Select>
                 </FormControl>
             </div>
             <TextField
                 name='searchParam'
-                label="Введіть код або назву послуги"
+                label={t("formRequestInputTitle")}
                 variant="outlined"
                 value={formData.searchParam}
                 onChange={handleInputChange}

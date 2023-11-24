@@ -38,7 +38,7 @@ const BreadCrumbs: React.FC<IBreadCrumbsProps> = ({
             underline="hover"
             color={"inherit"}
           >
-            Всі аналізи
+            Analyses
         </Link>
         { arrayFromLinks.length !== 1 && arrayFromLinks.map((link, index) => (
           <Link
